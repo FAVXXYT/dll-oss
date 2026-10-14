@@ -252,6 +252,19 @@ void SwapchainHook::DX12Render(bool underui) {
     if (!D2D::context || !d3d11On12Device || !isDX12 || !queue) return;
 
     currentBitmap = swapchain->GetCurrentBackBufferIndex();
+    // FAVIO: detect post-init buffer recreation (resize/world join makes our
+    // wrapped resources stale -> overlay vanishes). Force DX12Init re-run.
+    {
+        winrt::com_ptr<ID3D12Resource> liveBuffer;
+        if (SUCCEEDED(swapchain->GetBuffer(currentBitmap, IID_PPV_ARGS(liveBuffer.put())))) {
+            if (!frameContexts.empty() && currentBitmap < frameContexts.size() &&
+                liveBuffer.get() != frameContexts[currentBitmap].main_render_target_resource.get()) {
+                Logger::debug("[Swapchain] buffers recreated - rewrapping overlays");
+                init = false;
+                return;
+            }
+        }
+    }
     {
         static UINT lastBitmap = 9999;
         if (lastBitmap != currentBitmap) {
