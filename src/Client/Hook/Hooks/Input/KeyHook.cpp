@@ -4,6 +4,7 @@
 #include "../../../../Utils/Memory/Game/SignatureAndOffsetManager.hpp"
 #include "../../../../Utils/UserActionLogger.hpp"
 #include "Hook/Hooks/Game/UnicodeWndProcHack.hpp"
+#include "../../../Events/Input/MouseEvent.hpp"
 
 KeyHook::KeyHook() : Hook("KeyHook", GET_SIG_ADDRESS("Keyboard::feed"))
 {
@@ -55,6 +56,65 @@ bool KeyHook::handle(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         eventMgr.trigger(event);
 
         return event->isCancelled();
+    }
+    }
+
+    // FAVIO: MouseDevice/InputHandler sigs are dead on 1.26.52, so synthesize
+    // MouseEvent from raw window messages on this same WndProc path.
+    static short s_lastMouseX = 0, s_lastMouseY = 0;
+    auto emitMouse = [&](char button, char action, short x, short y) {
+        short dx = static_cast<short>(x - s_lastMouseX);
+        short dy = static_cast<short>(y - s_lastMouseY);
+        s_lastMouseX = x;
+        s_lastMouseY = y;
+        auto event = nes::make_holder<MouseEvent>(button, action, x, y, dx, dy);
+        eventMgr.trigger(event);
+        return event->isCancelled();
+    };
+    auto msgPos = [&]() {
+        return std::make_pair(static_cast<short>(LOWORD(lParam)), static_cast<short>(HIWORD(lParam)));
+    };
+
+    switch (uMsg) {
+    case WM_MOUSEMOVE: {
+        auto [x, y] = msgPos();
+        return emitMouse(0, 0, x, y);
+    }
+    case WM_LBUTTONDOWN: {
+        auto [x, y] = msgPos();
+        return emitMouse(1, 1, x, y);
+    }
+    case WM_LBUTTONUP: {
+        auto [x, y] = msgPos();
+        return emitMouse(1, 0, x, y);
+    }
+    case WM_RBUTTONDOWN: {
+        auto [x, y] = msgPos();
+        return emitMouse(2, 1, x, y);
+    }
+    case WM_RBUTTONUP: {
+        auto [x, y] = msgPos();
+        return emitMouse(2, 0, x, y);
+    }
+    case WM_MBUTTONDOWN: {
+        auto [x, y] = msgPos();
+        return emitMouse(3, 1, x, y);
+    }
+    case WM_MBUTTONUP: {
+        auto [x, y] = msgPos();
+        return emitMouse(3, 0, x, y);
+    }
+    case WM_XBUTTONDOWN:
+    case WM_XBUTTONUP: {
+        auto [x, y] = msgPos();
+        char button = (GET_XBUTTON_WPARAM(wParam) == XBUTTON1) ? 5 : 6;
+        char action = (uMsg == WM_XBUTTONDOWN) ? 1 : 0;
+        return emitMouse(button, action, x, y);
+    }
+    case WM_MOUSEWHEEL: {
+        auto [x, y] = msgPos();
+        char action = (GET_WHEEL_DELTA_WPARAM(wParam) > 0) ? 0x78 : 0x80;
+        return emitMouse(4, action, x, y);
     }
     }
 

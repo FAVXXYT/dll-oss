@@ -363,7 +363,8 @@ void Module::normalRenderCore(int index, std::string &text) {
 }
 
 void Module::normalRender(int index, std::string &value) {
-    if (!isEnabled() || SDK::getCurrentScreen() != "hud_screen") return;
+    // FAVIO: screen gate removed (state unavailable on 1.26.52) — HUD draws anywhere.
+    if (!isEnabled()) return;
     if (value.empty()) return;
 
     std::string text{};

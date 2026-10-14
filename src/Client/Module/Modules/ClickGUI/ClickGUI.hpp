@@ -310,17 +310,10 @@ public:
             Client::LoadPrivate();
         }
 
-        //TODO: MAKE module->setActive() module->isActive() module->isRestricted()
-        // #if !defined(__DEBUG__)
-        if (SDK::getCurrentScreen() != "zoom_screen" &&
-            SDK::getCurrentScreen() != "f3_screen" &&
-            SDK::getCurrentScreen() != "hud_screen" &&
-            SDK::getCurrentScreen() != "pause_screen"
-#if defined(__DEBUG__)
-            && SDK::getServerIP() != "none"
-#endif
-        )
-            return;
+        // FAVIO: screen state is unavailable on 1.26.52 (SetupAndRender sig dead,
+        // currentScreen is always "unknown"). The menu toggles on keypress anywhere
+        // until screen tracking is re-sigged. Known limitation: keys also toggle
+        // while typing in game text boxes.
 
         if (event.getKey() == VK_CONTROL && event.getAction() == ActionType::Pressed) MC::holdingCTRL = true;
         else if (event.getKey() == VK_CONTROL && event.getAction() == ActionType::Released) MC::holdingCTRL = false;
@@ -328,7 +321,8 @@ public:
         if (this->isKeybind(event.keys) && this->isKeyPartOfKeybind(event.key) && event.getAction() == ActionType::Pressed) {
             bool wasActive = this->active;
 #if !defined(__DEBUG__)
-            if (SDK::getCurrentScreen() != "hud_screen" && SDK::getCurrentScreen() != "pause_screen" && SDK::getCurrentScreen() != "f3_screen" && SDK::getCurrentScreen() != "zoom_screen") {
+            // FAVIO: screen state unavailable (see above) — always take the menu path.
+            if (false) {
                 WinrtUtils::setCursorTypeThreaded(winrt::Windows::UI::Core::CoreCursorType::Arrow);
                 // Immediately hide cursor + set inactive, defer state cleanup to render thread
                 if (wasActive) {
@@ -616,11 +610,7 @@ public:
 
         if (this->active) event.cancel();
 
-#if !defined(__DEBUG__)
-        if (SDK::getCurrentScreen() != "hud_screen" && SDK::getCurrentScreen() != "pause_screen" && SDK::getCurrentScreen() != "f3_screen" && SDK::getCurrentScreen() != "zoom_screen") {
-            if (this->active) { this->active = false; menuOpen = false; }
-        }
-#endif
+        // FAVIO: screen-state force-close removed (state unavailable, see onKey).
 
         if ((this->active || editmenu) && (
                 SDK::getCurrentScreen() == "hud_screen" ||
