@@ -505,14 +505,11 @@ void Client::initialize()
     RegisterActivationHandler();
     HookManager::initialize();
     MH_ApplyQueued();
-    Logger::success("7");
 
     // Initialize expression formatting system (for color functions in HUD labels)
     ExpressionFormat::initialize();
-    Logger::success("8");
 
     ModuleManager::initialize();
-    Logger::success("9");
 
     CommandManager::initialize();
 

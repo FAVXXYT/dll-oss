@@ -17,12 +17,6 @@ LRESULT UnicodeWndProcHack::MasterWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, L
     if (uMsg == WM_SETTEXT && !IsWindowUnicode(hWnd))
         return TRUE;
 
-    static bool keyLogged = false;
-    if (!keyLogged && (uMsg == WM_KEYDOWN || uMsg == WM_SYSKEYDOWN)) {
-        keyLogged = true;
-        Logger::debug("[WndProc] first key message live");
-    }
-
     // Check if key event was cancelled (e.g., when GUI is open)
     if (KeyHook::handle(hWnd, uMsg, wParam, lParam))
         return 0; // Block the key from reaching the game
@@ -36,7 +30,6 @@ LRESULT UnicodeWndProcHack::MasterWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, L
 
 void UnicodeWndProcHack::enableHook()
 {
-    Logger::debug("[WndProc] installing: window=0x{:X}", reinterpret_cast<uintptr_t>(static_cast<void*>(Client::window)));
     if (!g_realWndProc && Client::window)
     {
         WNDPROC currentProc = (WNDPROC)GetWindowLongPtrW(Client::window, GWLP_WNDPROC);

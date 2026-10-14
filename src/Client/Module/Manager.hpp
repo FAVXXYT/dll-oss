@@ -55,9 +55,7 @@ namespace ModuleManager {
     template<typename T, typename... ArgsT>
     void addModule(ArgsT... args) {
         auto modulePtr = std::make_shared<T>(args...);
-        Logger::debug("[ModuleManager] constructed {}", modulePtr->name);
         modulePtr->postConstructInitialize();
-        Logger::debug("[ModuleManager] initialized {}", modulePtr->name);
         size_t hash = std::hash<std::string>{}(modulePtr->name);
         moduleMap[hash] = modulePtr;
         ModuleState::cguiRefresh = true;

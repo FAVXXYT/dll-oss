@@ -1,7 +1,6 @@
 #include "../DXGI/SwapchainHook.hpp"
 #include <winrt/base.h>
 #include "../../../../../GUI/D2D.hpp"
-#include "../../../../../GUI/Engine/EngineImGui.hpp"
 #include "../../../../../Events/Render/RenderEvent.hpp"
 #include "../../../../../Events/Render/RenderUnderUIEvent.hpp"
 #include "d2d1.h"
@@ -166,24 +165,9 @@ void SwapchainHook::DX12Init() {
             IID_PPV_ARGS(D3D11Resources[i].put())
         );
 
-        D3D11Resources[i]->QueryInterface(IID_PPV_ARGS(DXGISurfaces[i].put()));
+        D3D11Resources[i]->QueryInterface(IID_PPV_ARGS(DXGISurfaces[i].get()));
 
-        DXGI_SURFACE_DESC surfDesc = {};
-        if (SUCCEEDED(DXGISurfaces[i]->GetDesc(&surfDesc))) {
-            static bool fmtLogged = false;
-            if (!fmtLogged) {
-                fmtLogged = true;
-                Logger::debug("[Swapchain] backbuffer format=0x{:X} {}x{}", static_cast<unsigned>(surfDesc.Format), surfDesc.Width, surfDesc.Height);
-            }
-        }
-        HRESULT bmpHr = D2D::context->CreateBitmapFromDxgiSurface(DXGISurfaces[i].get(), bitmapProps, D2D1Bitmaps[i].put());
-        {
-            static bool bmpLogged = false;
-            if (!bmpLogged) {
-                bmpLogged = true;
-                Logger::debug("[Swapchain] CreateBitmap hr=0x{:X} bitmap={}", static_cast<unsigned>(bmpHr), D2D1Bitmaps[i].get() ? 1 : 0);
-            }
-        }
+        D2D::context->CreateBitmapFromDxgiSurface(DXGISurfaces[i].get(), bitmapProps, D2D1Bitmaps[i].put());
 
     }
 
@@ -241,15 +225,6 @@ void SwapchainHook::DX12Init() {
 }
 
 void SwapchainHook::DX12Render(bool underui) {
-    static bool liveLogged = false;
-    if (!liveLogged) {
-        liveLogged = true;
-        Logger::debug("[Swapchain] DX12Render live: D2D={} dev11on12={} isDX12={} queue={}",
-            D2D::context.get() != nullptr ? 1 : 0,
-            d3d11On12Device.get() != nullptr ? 1 : 0,
-            isDX12 ? 1 : 0,
-            queue.get() != nullptr ? 1 : 0);
-    }
     if (!D2D::context || !d3d11On12Device || !isDX12 || !queue) return;
 
     currentBitmap = swapchain->GetCurrentBackBufferIndex();
@@ -266,14 +241,6 @@ void SwapchainHook::DX12Render(bool underui) {
             }
         }
     }
-    {
-        static UINT lastBitmap = 9999;
-        if (lastBitmap != currentBitmap) {
-            lastBitmap = currentBitmap;
-            Logger::debug("[Swapchain] bitmap={} count={}", currentBitmap, bufferCount);
-        }
-    }
-
     ID3D11Resource* resource = D3D11Resources[currentBitmap].get();
     d3d11On12Device->AcquireWrappedResources(&resource, 1);
 
@@ -328,9 +295,6 @@ void SwapchainHook::DX12Render(bool underui) {
     // This avoids deadlock when modules are toggled from within event callbacks
     ModuleManager::processPendingToggles();
 
-    // FAVIO-TEMP: pipeline proof — inside ImGui frame, no gates.
-    FlarialGUI::RoundedRect(0, 0, D2D1::ColorF(1, 0, 0, 1), 400, 400, 0, 0);
-
     if (!underui) {
         auto event = nes::make_holder<RenderEvent>();
         event->RTV = cachedDX12RTVs[currentBitmap].get();
@@ -352,12 +316,7 @@ void SwapchainHook::DX12Render(bool underui) {
         }
     }
 
-    HRESULT endHr = D2D::context->EndDraw();
-    static bool endDrawLogged = false;
-    if (!endDrawLogged) {
-        endDrawLogged = true;
-        Logger::debug("[Swapchain] first EndDraw hr=0x{:X}", static_cast<unsigned>(endHr));
-    }
+    D2D::context->EndDraw();
     D2D::context->SetTarget(nullptr);
 
     d3d11On12Device->ReleaseWrappedResources(&resource, 1);
