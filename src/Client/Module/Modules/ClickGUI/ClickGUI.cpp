@@ -391,6 +391,11 @@ void ClickGUI::onPacketReceive(PacketEvent& event) {
 
 
 void ClickGUI::onRender(RenderEvent &event) {
+    static bool renderLogged = false;
+    if (!renderLogged) {
+        renderLogged = true;
+        Logger::debug("[ClickGUI] onRender live");
+    }
     // Handle deferred close from the key handler thread safely on the render thread.
     // All shared state modifications (strings, maps, etc.) happen here on the render
     // thread to avoid data races with concurrent reads during rendering.

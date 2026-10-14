@@ -14,6 +14,7 @@
 #include "../../../GUI/Engine/Constraints.hpp"
 #include "../../../GUI/D2D.hpp"
 #include "../../../../Assets/Assets.hpp"
+#include "../../../Utils/Logger/Logger.hpp"
 
 #define clickgui ModuleManager::getModule("ClickGUI")
 
@@ -292,6 +293,7 @@ public:
     //void fov(FOVEvent& event);
 
     void onKey(KeyEvent &event) {
+        Logger::debug("[ClickGUI] key={} action={} active={}", event.getKey(), static_cast<int>(event.getAction()), this->active ? 1 : 0);
         std::string &clickguiKey = getOps<std::string>("keybind");
         if (!this->active && clickguiKey.empty()) {
             clickguiKey = "k";
