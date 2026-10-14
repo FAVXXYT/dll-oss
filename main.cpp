@@ -98,7 +98,7 @@ void SavePlayerCache() {
         playersListString = "{\"players\":[]}";
     }
 
-    std::string filePath = Utils::getRoamingPath() + "/Flarial/playerscache.txt";
+    std::string filePath = Utils::getRoamingPath() + "/FAVIO/playerscache.txt";
     std::ofstream cacheFile(filePath);
     if (cacheFile.is_open()) {
         cacheFile << playersListString;
