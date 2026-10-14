@@ -222,7 +222,11 @@ void HookManager::initialize()
     // if (VersionUtils::checkEqual(21, 130)) addHook<SplashTextHook>();
     for (const auto& hook : hooks)
     {
-        hook->enableHook();
+        __try {
+            hook->enableHook();
+        } __except (EXCEPTION_EXECUTE_HANDLER) {
+            Logger::custom(fg(fmt::color::crimson), "Hook", "Crashed while enabling {} - skipped", hook->name);
+        }
     }
 
     float elapsed = (Utils::getCurrentMs() - start) / 1000.0;
