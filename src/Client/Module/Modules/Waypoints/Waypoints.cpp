@@ -448,7 +448,7 @@ void Waypoints::onRender(RenderEvent& event) {
 
 
 void Waypoints::onKey(KeyEvent& event) {
-	if (this->isEnabled() && (
+	if (this->isEnabled() && SDK::clientInstance && (
 		SDK::clientInstance->getScreenName() == "hud_screen" ||
 		SDK::clientInstance->getScreenName() == "f3_screen" ||
 		SDK::clientInstance->getScreenName() == "zoom_screen"

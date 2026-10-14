@@ -127,7 +127,8 @@ std::string Coordinates::sigma(float val) {
 }
 
 void Coordinates::onRender(RenderEvent &event) {
-    if (this->isEnabled() && SDK::clientInstance->getLocalPlayer() && SDK::getCurrentScreen() == "hud_screen") {
+    // FAVIO: screen gate removed (state unavailable); null-guard added.
+    if (this->isEnabled() && SDK::clientInstance && SDK::clientInstance->getLocalPlayer()) {
 
         if (!getOps<bool>("verticalMode")) {
             std::string coord = getOps<std::string>("text");

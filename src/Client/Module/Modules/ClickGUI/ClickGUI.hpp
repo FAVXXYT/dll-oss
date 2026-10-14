@@ -351,7 +351,7 @@ public:
                         // Immediately hide cursor + set inactive, defer state cleanup to render thread
                         this->active = false;
                         menuOpen = false;
-                        SDK::clientInstance->grabMouse(10);
+                        if (SDK::clientInstance) SDK::clientInstance->grabMouse(10);
                         pendingGrabMouse = false;
                         pendingSaveScrollPos = Client::settings.getSettingByName<bool>("saveScrollPos")->value;
                         if (pendingSaveScrollPos) {
@@ -439,7 +439,7 @@ public:
         }
 
         if (this->active && !pendingClose.load()) {
-            SDK::clientInstance->releaseMouse(); // release mouse lets cursor move
+            if (SDK::clientInstance) SDK::clientInstance->releaseMouse(); // release mouse lets cursor move
 
             // Check if any textbox is active to prevent Edit Menu from opening when typing
             bool anyTextBoxActive = std::any_of(FlarialGUI::TextBoxes.begin(), FlarialGUI::TextBoxes.end(), [](const auto &pair) { return pair.second.isActive; });
@@ -494,7 +494,7 @@ public:
             menuOpen = true;
         }
 
-        if ((this->active && !pendingClose.load()) || editmenu && SDK::getCurrentScreen() == "hud_screen") SDK::clientInstance->releaseMouse(); // release mouse lets cursor move
+        if ((this->active && !pendingClose.load()) || editmenu && SDK::getCurrentScreen() == "hud_screen") { if (SDK::clientInstance) SDK::clientInstance->releaseMouse(); } // release mouse lets cursor move
 
         if (this->active || editmenu) event.cancel(); // do not pass key event to the game
     }

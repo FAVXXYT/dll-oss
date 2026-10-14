@@ -8,7 +8,7 @@
 class CapeManager : public Listener {
 public:
     void onKey(KeyEvent& event) {
-        if (SDK::clientInstance->getLocalPlayer()) {
+        if (SDK::clientInstance && SDK::clientInstance->getLocalPlayer()) {
             auto player = SDK::clientInstance->getLocalPlayer();
 
             auto skin = player->getSkin();

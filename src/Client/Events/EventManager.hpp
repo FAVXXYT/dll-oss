@@ -27,7 +27,10 @@ public:
     /// Dispatches an event to all registered listeners; no-ops if client isn't initialized.
     template <typename EventType>
     void trigger(EventType& event) {
-        if (!SDK::clientInstance) return;
+        // FAVIO: clientInstance gate removed — it is never set on 1.26.52
+        // (SetupAndRender sig dead), which muted every event. Modules must
+        // null-check clientInstance themselves; unguarded sites are fixed
+        // as the crash reporter names them.
         if (!ModuleState::initialized) return;
         dispatcher.trigger(event);
     }

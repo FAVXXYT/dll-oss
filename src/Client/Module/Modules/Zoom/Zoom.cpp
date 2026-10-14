@@ -148,7 +148,7 @@ void Zoom::onGetFOV(FOVEvent &event) {
     // Only skip updating currentFov for default values, but still apply zoom
     // This prevents feedback loops while maintaining zoom effect
     if (fov != 70 && fov != 60) {
-        auto player = SDK::clientInstance->getLocalPlayer();
+        auto player = (SDK::clientInstance) ? SDK::clientInstance->getLocalPlayer() : nullptr;
         if (player) {
             currentFov = fov;
             if (ModuleManager::getModule("Java Dynamic FOV").get()->isEnabled()) {

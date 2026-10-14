@@ -58,7 +58,8 @@ void CPSCounter::settingsRender(float settingsOffset) {
 
 void CPSCounter::onRender(RenderEvent& event)  {
 
-    if (!isEnabled() || SDK::getCurrentScreen() != "hud_screen") return;
+    // FAVIO: screen gate removed (state unavailable on 1.26.52).
+    if (!isEnabled()) return;
 
     std::string leftCPS = FlarialGUI::cached_to_string(GUIMouseListener::GetLeftCPS());
     std::string rightCPS = FlarialGUI::cached_to_string(GUIMouseListener::GetRightCPS());

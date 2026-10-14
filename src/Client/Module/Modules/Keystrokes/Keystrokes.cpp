@@ -426,7 +426,8 @@ void Keystrokes::normalRender(int index, std::string &value) {
 }
 
 void Keystrokes::onRender(RenderEvent &event) {
-    if (!this->isEnabled() || ClickGUI::blurActive || SDK::getCurrentScreen() != "hud_screen") return;
+    // FAVIO: screen gate removed (state unavailable on 1.26.52).
+    if (!this->isEnabled() || ClickGUI::blurActive) return;
     ClickGUI::HudFadeGuard fadeGuard;
     this->normalRender(7, (std::string &) "");
 }
