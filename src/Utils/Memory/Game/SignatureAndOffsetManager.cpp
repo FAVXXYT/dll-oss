@@ -44,6 +44,21 @@ void SignatureAndOffsetManager::clear() {
 }
 
 void SignatureAndOffsetManager::scanAllSignatures() {
+    // Diagnostics: prove exactly which module/range libhat scans.
+    {
+        HMODULE game = GetModuleHandleA(nullptr);
+        auto* dos = reinterpret_cast<IMAGE_DOS_HEADER*>(game);
+        auto* nt = reinterpret_cast<IMAGE_NT_HEADERS64*>(reinterpret_cast<uint8_t*>(game) + dos->e_lfanew);
+        auto* sec = IMAGE_FIRST_SECTION(nt);
+        for (unsigned i = 0; i < nt->FileHeader.NumberOfSections; ++i, ++sec) {
+            char name[9] = {};
+            memcpy(name, sec->Name, 8);
+            if (std::string(name) == ".text") {
+                Logger::debug("[SigScan] module base=0x{:X} .text RVA=0x{:X} size=0x{:X}",
+                    reinterpret_cast<uintptr_t>(game), sec->VirtualAddress, sec->Misc.VirtualSize);
+            }
+        }
+    }
     const unsigned int numThreads = std::thread::hardware_concurrency();
     std::vector<std::thread> threads;
     std::atomic<size_t> index{0};
