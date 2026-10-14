@@ -110,6 +110,7 @@ bool FlarialGUI::RoundedButton(const int index, float x, float y, const D2D_COLO
     if (isAdditionalY) SetIsInAdditionalYMode();
 
     if (CursorInRect(x, y, width, height) && MC::mouseButton == MouseButton::Left && !MC::held) {
+        Logger::debug("[Mouse] RoundedButton FIRED idx={}", index);
         // Log button click
         std::string buttonText = String::WStrToStr(text);
         std::string position = std::to_string((int)x) + "," + std::to_string((int)y);

@@ -16,6 +16,7 @@
 #include "../../../GUI/D2D.hpp"
 #include "../../../../Assets/Assets.hpp"
 #include "../../../../Utils/Logger/Logger.hpp"
+#include "../../../../Utils/Logger/Logger.hpp"
 
 #define clickgui ModuleManager::getModule("ClickGUI")
 
@@ -590,6 +591,8 @@ public:
     void onMouse(MouseEvent &event) {
         static int recvCount = 0;
         if ((++recvCount % 25) == 0) Logger::debug("[Mouse] onMouse recv={}", recvCount);
+        if (event.getButton() != MouseButton::None)
+            Logger::debug("[Mouse] btn={} act={} held={}", (int)event.getButton(), (int)event.getAction(), MC::held ? 1 : 0);
         // On GDK platform, get mouse position directly from the window.
         // FAVIO: convert physical pixels to DIPs (PerMonitorAware @120dpi here,
         // while all widget/D2D coordinates are DIPs) or every click misses.
