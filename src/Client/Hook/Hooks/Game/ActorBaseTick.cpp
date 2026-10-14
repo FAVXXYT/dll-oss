@@ -6,6 +6,7 @@
 void ActorBaseTick::enableHook() {
 
     auto base = address; // Player vtable
+    if (base == 0) return; // "Actor::vtable" sig did not resolve: TickEvent stays dead, no crash.
     int offset = *reinterpret_cast<int *>(base + 3);
     auto **vft = reinterpret_cast<uintptr_t **>(base + offset + 7);
 

@@ -43,8 +43,11 @@ void insertWriteOverlayUniform(SafetyHookContext& ctx) {
 
 
 void BgfxFrameExtractorInsertHook::enableHook() {
+    if (address == 0) return; // Batched sig did not resolve: overlay hooks stay off, no crash.
     midHookBatched = safetyhook::create_mid(address, &insertWriteOverlayUniformBatched);
-    midHook = safetyhook::create_mid(GET_SIG_ADDRESS("BgfxFrameExtractor::_insertWriteOverlayUniform"), &insertWriteOverlayUniform
+    uintptr_t singleAddr = GET_SIG_ADDRESS("BgfxFrameExtractor::_insertWriteOverlayUniform");
+    if (singleAddr == 0) return;
+    midHook = safetyhook::create_mid(singleAddr, &insertWriteOverlayUniform
     );
 }
 
