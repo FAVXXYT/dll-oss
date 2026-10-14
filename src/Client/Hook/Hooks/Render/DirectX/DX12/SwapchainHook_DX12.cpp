@@ -1,6 +1,7 @@
 #include "../DXGI/SwapchainHook.hpp"
 #include <winrt/base.h>
 #include "../../../../../GUI/D2D.hpp"
+#include <Client/Events/Input/MouseEvent.hpp>
 #include "../../../../../Events/Render/RenderEvent.hpp"
 #include "../../../../../Events/Render/RenderUnderUIEvent.hpp"
 #include "d2d1.h"
@@ -226,6 +227,47 @@ void SwapchainHook::DX12Init() {
 
 void SwapchainHook::DX12Render(bool underui) {
     if (!D2D::context || !d3d11On12Device || !isDX12 || !queue) return;
+
+    // FAVIO: polled menu mouse. Hardware mouse arrives via GameInput polls
+    // (no window messages, no WM_INPUT reach us), so feed input by polling the
+    // OS cursor state directly. Buttons always (transitions only, matches what
+    // the game used to deliver); movement only while the menu is open.
+    {
+        static POINT s_lastPt{ 0, 0 };
+        static bool s_first = true;
+        static bool s_l = false, s_r = false, s_m = false, s_x1 = false, s_x2 = false;
+        POINT pt{};
+        bool havePt = false;
+        if (GetCursorPos(&pt)) {
+            if (Client::window) ScreenToClient(Client::window, &pt);
+            havePt = true;
+        }
+        auto emitBtn = [&](int vk, char button, bool &last) {
+            bool down = (GetAsyncKeyState(vk) & 0x8000) != 0;
+            if (down == last || !havePt) { last = down; return; }
+            last = down;
+            auto event = nes::make_holder<MouseEvent>(button, down ? (char)1 : (char)0,
+                (short)pt.x, (short)pt.y, (short)0, (short)0);
+            eventMgr.trigger(event);
+        };
+        emitBtn(VK_LBUTTON, 1, s_l);
+        emitBtn(VK_RBUTTON, 2, s_r);
+        emitBtn(VK_MBUTTON, 3, s_m);
+        emitBtn(VK_XBUTTON1, 5, s_x1);
+        emitBtn(VK_XBUTTON2, 6, s_x2);
+        if (FlarialGUI::inMenu && havePt) {
+            short x = (short)pt.x, y = (short)pt.y;
+            if (s_first) { s_lastPt.x = x; s_lastPt.y = y; s_first = false; }
+            short dx = (short)(x - s_lastPt.x), dy = (short)(y - s_lastPt.y);
+            s_lastPt.x = x; s_lastPt.y = y;
+            if (dx != 0 || dy != 0) {
+                auto event = nes::make_holder<MouseEvent>((char)0, (char)0, x, y, dx, dy);
+                eventMgr.trigger(event);
+            }
+        } else {
+            s_first = true;
+        }
+    }
 
     currentBitmap = swapchain->GetCurrentBackBufferIndex();
     // FAVIO: detect post-init buffer recreation (resize/world join makes our
