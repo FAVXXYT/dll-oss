@@ -313,7 +313,12 @@ void SwapchainHook::DX12Render(bool underui) {
         }
     }
 
-    D2D::context->EndDraw();
+    HRESULT endHr = D2D::context->EndDraw();
+    static bool endDrawLogged = false;
+    if (!endDrawLogged) {
+        endDrawLogged = true;
+        Logger::debug("[Swapchain] first EndDraw hr=0x{:X}", static_cast<unsigned>(endHr));
+    }
     D2D::context->SetTarget(nullptr);
 
     d3d11On12Device->ReleaseWrappedResources(&resource, 1);
