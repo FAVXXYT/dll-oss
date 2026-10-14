@@ -12,7 +12,7 @@ void ForceCoords::onDisable() {
 }
 
 void ForceCoords::patch() {
-    if (patched) return;
+    if (patched || !option) return;
     patched = true;
     DWORD oldProtect;
     VirtualProtect((LPVOID)option, patched_option.size(), PAGE_EXECUTE_READWRITE, &oldProtect);
@@ -21,7 +21,7 @@ void ForceCoords::patch() {
 }
 
 void ForceCoords::unpatch() {
-    if (!patched) return;
+    if (!patched || !option) return;
     patched = false;
     DWORD oldProtect;
     VirtualProtect((LPVOID)option, original_option.size(), PAGE_EXECUTE_READWRITE, &oldProtect);

@@ -31,7 +31,7 @@ public:
 		IDR_SWORD_PNG, "", false, {"swing", "animations", "sword"})
 	{
 		fluxSwing = GET_SIG_ADDRESS("FluxSwing");
-		original = std::bit_cast<std::array<std::byte, 5>>(*(std::byte(*)[5]) fluxSwing);
+		if (fluxSwing) original = std::bit_cast<std::array<std::byte, 5>>(*(std::byte(*)[5]) fluxSwing);
 	};
 
 	void onEnable() override;

@@ -10,13 +10,18 @@ void ItemRenderer::renderGuiItemNew(BaseActorRenderContext *BaseActorRenderCtx, 
     using func2 = void (__fastcall *)(ItemRenderer *, BaseActorRenderContext *, ItemStack *, int, float, float, bool, float, float, float, int);
     static func efunc = reinterpret_cast<func>(GET_SIG_ADDRESS("ItemRenderer::renderGuiItemNew"));
     static func2 efunc2 = reinterpret_cast<func2>(GET_SIG_ADDRESS("ItemRenderer::renderGuiItemNew"));
-    if (VersionUtils::checkBelow(21, 130)) return efunc(this, BaseActorRenderCtx, item, mode, x, y, isEnchanted, 1, opacity, scale);
+    if (VersionUtils::checkBelow(21, 130)) {
+        if (!efunc) return;
+        return efunc(this, BaseActorRenderCtx, item, mode, x, y, isEnchanted, 1, opacity, scale);
+    }
+    if (!efunc2) return;
     return efunc2(this, BaseActorRenderCtx, item, mode, x, y, isEnchanted, opacity, 1, scale, 17);
 }
 
 void* ItemRenderer::getAtlasIconInfo(ItemStack* item) {
     using func = void* (__fastcall *)(ItemRenderer *, ItemStack *);
     static func efunc = reinterpret_cast<func>(GET_SIG_ADDRESS("ItemRenderer::getAtlasIconInfo"));
+    if (!efunc) return nullptr;
     return efunc(this, item);
 }
 
@@ -30,6 +35,7 @@ void ItemRenderer::iconBlit(BaseActorRenderContext *renderContext, void *texture
                                      float, float, float, float *, float, float, float, float,
                                      int, int, float, float, int, bool);
     static func efunc = reinterpret_cast<func>(GET_SIG_ADDRESS("ItemRenderer::iconBlit"));
+    if (!efunc) return;
     efunc(this, renderContext, textureObj, x, y, z, uvCoords, w, h,
           lightMultiplier, alphaMultiplier, colorMult, secondaryColorMult,
           xscale, yScale, iconBlitGlint, useMultiColorTextureTinting);

@@ -20,5 +20,6 @@ Biome *BlockSource::getBiome(const BlockPos &bp) {
 
     using efunc = Biome *(__cdecl *)(BlockSource *, const BlockPos &);
     auto func = reinterpret_cast<efunc>(sig);
+    if (!func) return nullptr;
     return func(this, bp);
 }

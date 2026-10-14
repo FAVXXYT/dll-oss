@@ -10,8 +10,10 @@ public:
         using func_t = void(__fastcall*)(Tessellator*, mce::PrimitiveMode, int, bool);
         using func_t2 = void(__fastcall*)(Tessellator*, int, mce::PrimitiveMode, int, bool);
         static auto func = reinterpret_cast<func_t>(GET_SIG_ADDRESS("Tessellator::begin"));
+        if (!func) return;
         if (VersionUtils::checkAboveOrEqual(21, 130)) {
             static auto func2 = reinterpret_cast<func_t2>(GET_SIG_ADDRESS("Tessellator::begin"));
+            if (!func2) return;
             return func2(this, 0, vertexFormat, maxVertices, buildFaceData);
         }
         func(this, vertexFormat, maxVertices, buildFaceData);
@@ -20,18 +22,21 @@ public:
     void vertex(float x, float y, float z) {
         using func_t = void(__fastcall*)(Tessellator*, float, float, float);
         static auto func = reinterpret_cast<func_t>(GET_SIG_ADDRESS("Tessellator::vertex"));
+        if (!func) return;
         func(this, x, y, z);
     }
 
     void vertexUV(float x, float y, float z, float u, float v) {
         using func_t = void(__fastcall*)(Tessellator*, float, float, float, float, float);
         static auto func = reinterpret_cast<func_t>(GET_SIG_ADDRESS("Tessellator::vertexUV"));
+        if (!func) return;
         func(this, x, y, z, u, v);
     }
 
     void color(float r, float g, float b, float a) {
         using func_t = void(__fastcall*)(Tessellator*, mce::Color*);
         static auto func = reinterpret_cast<func_t>(GET_SIG_ADDRESS("Tessellator::colorF"));
+        if (!func) return;
         mce::Color color = { r, g, b, a };
         func(this, &color);
     }
@@ -39,12 +44,14 @@ public:
     void setRotation(float angle, Vec3<float> pivot) {
         using func_t = void(__fastcall*)(Tessellator *, float, Vec3<float>);
         static auto func = reinterpret_cast<func_t>(GET_SIG_ADDRESS("Tessellator::setRotation"));
+        if (!func) return;
         func(this, angle, pivot);
     }
 
     void resetTransform(bool a1) {
         using func_t = void(__fastcall*)(Tessellator *, bool);
         static auto func = reinterpret_cast<func_t>(GET_SIG_ADDRESS("Tessellator::resetTransform"));
+        if (!func) return;
         func(this, a1);
     }
 };

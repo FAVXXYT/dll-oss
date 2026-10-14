@@ -6,5 +6,7 @@ BaseActorRenderContext::BaseActorRenderContext(class ScreenContext *screenCtx, C
     using func = void (__fastcall *)(BaseActorRenderContext *, class ScreenContext *, ClientInstance *, MinecraftGame *);
     static func efunc = reinterpret_cast<func>(GET_SIG_ADDRESS("baseActorRenderContext"));
 
+    if (!efunc) return;
+
     efunc(this, screenCtx, clientInstance, game);
 }

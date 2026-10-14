@@ -17,6 +17,7 @@ Item* ItemStack::getItem() const {
 bool ItemStack::isEnchanted() {
     using isEnchantedFunc = bool(__fastcall*)(ItemStack*);
     static auto getIsEnchanted = reinterpret_cast<isEnchantedFunc>(GET_SIG_ADDRESS("ItemStack::isEnchanted"));
+    if (!getIsEnchanted) return false;
     return getIsEnchanted(this);
 }
 
@@ -27,10 +28,12 @@ short ItemStack::getDamageValue() {
     if(VersionUtils::checkAboveOrEqual(21, 40)) {
         using getDamageValueFunc = short (__fastcall *)(ItemStack *);
         static auto getDamageValue = reinterpret_cast<getDamageValueFunc>(GET_SIG_ADDRESS("ItemStack::getDamageValue"));
+        if (!getDamageValue) return 0;
         return getDamageValue(this);
     } else {
         using getDamageValueFunc = short (__fastcall *)(Item *, void *);
         static auto getDamageValue = reinterpret_cast<getDamageValueFunc>(GET_SIG_ADDRESS("Item::getDamageValue"));
+        if (!getDamageValue) return 0;
         return getDamageValue(this->mItem.get(), this->mUserData);
     }
 }
@@ -38,6 +41,7 @@ short ItemStack::getDamageValue() {
 short ItemStack::getMaxDamage() {
     using getMaxDamageFunc = short(__fastcall*)(ItemStack*);
     static auto getMaxDamage = reinterpret_cast<getMaxDamageFunc>(GET_SIG_ADDRESS("ItemStack::getMaxDamage"));
+    if (!getMaxDamage) return 0;
     return getMaxDamage(this);
 }
 

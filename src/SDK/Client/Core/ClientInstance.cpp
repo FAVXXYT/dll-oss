@@ -16,6 +16,8 @@ LocalPlayer *ClientInstance::getLocalPlayer()
         indexRef = GET_SIG_ADDRESS("ClientInstance::getLocalPlayerIndex");
     }
 
+    if (indexRef == 0) return nullptr;
+
     int index = *reinterpret_cast<int *>(indexRef + 9) / 8;
 
     return Memory::CallVFuncI<LocalPlayer *>(index, this);
@@ -136,6 +138,7 @@ void ClientInstance::_updateScreenSizeVariables(Vec2<float> *totalScreenSize, Ve
                                                 float forcedGuiScale)
 {
     static auto sig = GET_SIG_ADDRESS("ClientInstance::_updateScreenSizeVariables");
+    if (!sig) return;
     auto fn = reinterpret_cast<void(__thiscall *)(ClientInstance *, Vec2<float> *, Vec2<float> *, float)>(sig);
     fn(this, totalScreenSize, safeZone, forcedGuiScale);
 }

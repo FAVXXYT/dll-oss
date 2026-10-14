@@ -132,6 +132,8 @@ std::shared_ptr<Packet> SDK::createPacket(int id) {
         Address = GET_SIG_ADDRESS("MinecraftPackets::createPacket");
     }
 
+    if (!Address) return nullptr;
+
     const auto pFunction = reinterpret_cast<std::shared_ptr<Packet>(__fastcall *)(int)>(Address);
     return pFunction(id);
 }

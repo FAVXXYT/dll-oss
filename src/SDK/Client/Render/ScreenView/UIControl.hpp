@@ -23,6 +23,7 @@ public:
             flags |= 1; // set cachedPositionDirty
             using func = Vec2<float>*(__fastcall*)(UIControl*);
             static auto getPosition = reinterpret_cast<func>(GET_SIG_ADDRESS("UIControl::getPosition"));
+            if (!getPosition) return;
             if(override) {
                 auto newPos = parentRelativePosition;
                 auto* pos = getPosition(this);
@@ -33,6 +34,7 @@ public:
         } else {
             using func = void (__fastcall *)(UIControl *);
             static auto setCachedPosition = reinterpret_cast<func>(GET_SIG_ADDRESS("UIControl::_setCachedPosition"));
+            if (!setCachedPosition) return;
             return setCachedPosition(this);
         }
     }

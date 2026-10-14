@@ -27,8 +27,8 @@ public:
 		yaw1 = GET_SIG_ADDRESS("CameraYaw");
 		yaw2 = GET_SIG_ADDRESS("CameraYaw2");
 
-		originalYaw1 = std::bit_cast<std::array<std::byte, 4>>(*(std::byte(*)[4]) yaw1);
-		originalYaw2 = std::bit_cast<std::array<std::byte, 4>>(*(std::byte(*)[4]) yaw2);
+		if (yaw1) originalYaw1 = std::bit_cast<std::array<std::byte, 4>>(*(std::byte(*)[4]) yaw1);
+		if (yaw2) originalYaw2 = std::bit_cast<std::array<std::byte, 4>>(*(std::byte(*)[4]) yaw2);
 
 		if (!VersionUtils::checkAboveOrEqual(21, 40)) {
 			pitch = GET_SIG_ADDRESS("CameraPitch");

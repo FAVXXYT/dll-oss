@@ -81,6 +81,7 @@ bool Actor::canSee(const Actor& actor) {
         }
     }
     static auto canSee = reinterpret_cast<canSeeFunc>(sig);
+    if (!sig) return false;
     return canSee(this, actor);
 }
 
@@ -283,6 +284,7 @@ void Actor::setNametag(std::string *name) {
     }
 
     auto fn = reinterpret_cast<void (__thiscall *)(Actor *, std::string *)>(sig);
+    if (!sig) return;
     return fn(this, name);
 }
 
@@ -294,6 +296,7 @@ std::string *Actor::getNametag() {
     }
 
     auto fn = reinterpret_cast<std::string *(__thiscall *)(Actor *)>(sig);
+    if (!sig) return nullptr;
     return fn(this);
 }
 

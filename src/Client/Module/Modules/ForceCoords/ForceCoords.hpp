@@ -20,8 +20,10 @@ public:
 		IDR_COORDINATES_PNG, "") {
 		option = GET_SIG_ADDRESS("ForceCoordsOption");
 
-		original_option.resize(4);
-		memcpy(original_option.data(), (LPVOID)option, 4);
+		if (option) {
+			original_option.resize(4);
+			memcpy(original_option.data(), (LPVOID)option, 4);
+		}
 
 		// 4 nops
 		patched_option.push_back(0x90);

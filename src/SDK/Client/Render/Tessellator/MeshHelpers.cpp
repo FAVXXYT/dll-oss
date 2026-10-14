@@ -10,6 +10,7 @@ void MeshHelpers::renderMeshImmediately(ScreenContext* screenContext, Tessellato
         static auto sig = ver121120 ? GET_SIG_ADDRESS("MeshHelpers::renderMeshImmediately") : Memory::offsetFromSig(GET_SIG_ADDRESS("MeshHelpers::renderMeshImmediately"), 1);
         using func_t = void(*)(ScreenContext*, Tessellator*, mce::MaterialPtr*, char*);
         static auto func = reinterpret_cast<func_t>(sig);
+        if (!func) return;
         if (!material) {
             std::cout << "material nullptr\n";
             return;
@@ -39,12 +40,14 @@ void MeshHelpers::renderMeshImmediately2(ScreenContext* screenContext, Tessellat
         static auto sig = GET_SIG_ADDRESS("MeshHelpers::renderMeshImmediately2");
         using func_t = void(*)(ScreenContext*, Tessellator*, mce::MaterialPtr*, BedrockTextureData&, char*);
         static auto func = reinterpret_cast<func_t>(sig);
+        if (!func) return;
         func(screenContext, tessellator, material, texture, pad);
     }
     else {
         static auto sig = GET_SIG_ADDRESS("MeshHelpers::renderMeshImmediately2");
         using func_t = void(*)(ScreenContext*, Tessellator*, mce::MaterialPtr*, BedrockTextureData&);
         static auto func = reinterpret_cast<func_t>(sig);
+        if (!func) return;
         func(screenContext, tessellator, material, texture);
     }
 }

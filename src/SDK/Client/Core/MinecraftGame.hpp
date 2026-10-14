@@ -14,6 +14,7 @@ public:
     void _onResumeWaitReloadActors() {
         static auto sig = GET_SIG_ADDRESS("MinecraftGame::_onResumeWaitReloadActors");
         auto fn = reinterpret_cast<void (__thiscall *)(MinecraftGame *)>(sig);
+        if (!fn) return;
         fn(this);
     }
 //    void _onResumeWaitPreviousResourceLoads() {
