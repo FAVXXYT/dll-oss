@@ -590,14 +590,18 @@ public:
     void onMouse(MouseEvent &event) {
         static int recvCount = 0;
         if ((++recvCount % 25) == 0) Logger::debug("[Mouse] onMouse recv={}", recvCount);
-        // On GDK platform, get mouse position directly from the window
+        // On GDK platform, get mouse position directly from the window.
+        // FAVIO: convert physical pixels to DIPs (PerMonitorAware @120dpi here,
+        // while all widget/D2D coordinates are DIPs) or every click misses.
         if (PlatformUtils::isGDK() && (this->active || editmenu)) {
             if (Client::window) {
                 POINT cursorPos;
                 if (GetCursorPos(&cursorPos)) {
                     if (ScreenToClient(Client::window, &cursorPos)) {
-                        MC::mousePos.x = static_cast<float>(cursorPos.x);
-                        MC::mousePos.y = static_cast<float>(cursorPos.y);
+                        float dpiScale = static_cast<float>(GetDpiForWindow(Client::window)) / 96.0f;
+                        if (dpiScale < 1.0f) dpiScale = 1.0f;
+                        MC::mousePos.x = static_cast<float>(cursorPos.x) / dpiScale;
+                        MC::mousePos.y = static_cast<float>(cursorPos.y) / dpiScale;
                     }
                 }
             }
