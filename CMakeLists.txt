@@ -92,6 +92,7 @@ target_include_directories(FAVIO PRIVATE
         "src/Client"
         "src/Client/Module"
         "lib"
+        "lib/favio"
         "lib/lua/lua-5.4.7/include"
 )
 
@@ -149,7 +150,7 @@ FetchContent_Declare(
 FetchContent_Declare(
         fmt
         GIT_REPOSITORY https://github.com/fmtlib/fmt.git
-        GIT_TAG        master
+        GIT_TAG        11.2.0
 )
 
 FetchContent_Declare(
@@ -176,27 +177,15 @@ FetchContent_Declare(
        GIT_TAG mcbe
 )
 
-FetchContent_Declare(
-        discord-rpc
-        GIT_REPOSITORY https://github.com/EclipseMenu/discord-presence.git
-        GIT_TAG main
-)
-
-FetchContent_Declare(
-        rift
-        GIT_REPOSITORY https://github.com/EclipseMenu/rift.git
-        GIT_TAG v2.0.2
-)
-
 set(FMT_MODULE OFF CACHE BOOL "" FORCE)
-FetchContent_MakeAvailable(libhat entt nes fmt magic_enum LuaBridge safetyhook jsoncpp discord-rpc rift)
+FetchContent_MakeAvailable(libhat entt nes fmt magic_enum LuaBridge safetyhook jsoncpp)
 
-target_link_libraries(FAVIO PRIVATE jsoncpp safetyhook libcurl ws2_32.lib crypt32.lib normaliz.lib wldap32.lib LuaBridge lua_static libhat fmt::fmt EnTT::EnTT NES windowscodecs.lib urlmon.lib dwrite.lib d3d12.lib dxgi.lib d3d11.lib d2d1.lib wininet.lib setupapi.lib version FreeType magic_enum runtimeobject discord-rpc rift)
+target_link_libraries(FAVIO PRIVATE jsoncpp safetyhook libcurl ws2_32.lib crypt32.lib normaliz.lib wldap32.lib LuaBridge lua_static libhat fmt::fmt EnTT::EnTT NES windowscodecs.lib urlmon.lib dwrite.lib d3d12.lib dxgi.lib d3d11.lib d2d1.lib wininet.lib setupapi.lib version FreeType magic_enum runtimeobject)
 
 target_link_libraries(FAVIO PUBLIC MinHook)
 
 if (EXISTS "${CMAKE_SOURCE_DIR}/compiledoom.txt")
-    message(WARNING "Compiling with Doom Module, Flarial may freeze or crash.")
+    message(WARNING "Compiling with Doom Module, FAVIO may freeze or crash.")
     add_compile_definitions(COMPILE_DOOM)
     file(GLOB_RECURSE DOOM_SOURCES "src/Client/Module/Modules/Doom/doomgeneric/*.c" "src/Client/Module/Modules/Doom/doomgeneric/*.h")
     add_library(DoomModule ${DOOM_SOURCES}
