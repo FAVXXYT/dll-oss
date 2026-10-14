@@ -15,6 +15,7 @@
 #include "../../../GUI/Engine/Constraints.hpp"
 #include "../../../GUI/D2D.hpp"
 #include "../../../../Assets/Assets.hpp"
+#include "../../../../Utils/Logger/Logger.hpp"
 
 #define clickgui ModuleManager::getModule("ClickGUI")
 
@@ -587,6 +588,8 @@ public:
     }
 
     void onMouse(MouseEvent &event) {
+        static int recvCount = 0;
+        if ((++recvCount % 25) == 0) Logger::debug("[Mouse] onMouse recv={}", recvCount);
         // On GDK platform, get mouse position directly from the window
         if (PlatformUtils::isGDK() && (this->active || editmenu)) {
             if (Client::window) {

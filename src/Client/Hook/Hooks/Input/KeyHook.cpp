@@ -5,6 +5,7 @@
 #include "../../../../Utils/UserActionLogger.hpp"
 #include "Hook/Hooks/Game/UnicodeWndProcHack.hpp"
 #include "../../../Events/Input/MouseEvent.hpp"
+#include "../../../../Utils/Logger/Logger.hpp"
 #include "../../../GUI/Engine/EngineCore.hpp"
 
 KeyHook::KeyHook() : Hook("KeyHook", GET_SIG_ADDRESS("Keyboard::feed"))
@@ -70,6 +71,8 @@ bool KeyHook::handle(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         s_lastMouseY = y;
         auto event = nes::make_holder<MouseEvent>(button, action, x, y, dx, dy);
         eventMgr.trigger(event);
+        static int synthCount = 0;
+        if ((++synthCount % 25) == 0) Logger::debug("[Mouse] synthesized={}", synthCount);
         return event->isCancelled();
     };
     auto msgPos = [&]() {
