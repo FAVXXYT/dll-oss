@@ -252,6 +252,13 @@ void SwapchainHook::DX12Render(bool underui) {
     if (!D2D::context || !d3d11On12Device || !isDX12 || !queue) return;
 
     currentBitmap = swapchain->GetCurrentBackBufferIndex();
+    {
+        static UINT lastBitmap = 9999;
+        if (lastBitmap != currentBitmap) {
+            lastBitmap = currentBitmap;
+            Logger::debug("[Swapchain] bitmap={} count={}", currentBitmap, bufferCount);
+        }
+    }
 
     ID3D11Resource* resource = D3D11Resources[currentBitmap].get();
     d3d11On12Device->AcquireWrappedResources(&resource, 1);

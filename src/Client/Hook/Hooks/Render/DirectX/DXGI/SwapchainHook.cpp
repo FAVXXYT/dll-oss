@@ -267,6 +267,16 @@ HRESULT SwapchainHook::swapchainCallback(IDXGISwapChain3 *pSwapChain, UINT syncI
     }
 
     if(!swapchain) swapchain = pSwapChain;
+    {
+        static void* firstChain = nullptr;
+        if (!firstChain) {
+            firstChain = pSwapChain;
+            Logger::debug("[Swapchain] presenting chain=0x{:X}", reinterpret_cast<uintptr_t>(firstChain));
+        } else if (firstChain != (void*)pSwapChain) {
+            firstChain = pSwapChain;
+            Logger::debug("[Swapchain] CHAIN CHANGED to 0x{:X}", reinterpret_cast<uintptr_t>(firstChain));
+        }
+    }
     if (D2D::context) MC::windowSize = Vec2(D2D::context->GetSize().width, D2D::context->GetSize().height);
 
 
