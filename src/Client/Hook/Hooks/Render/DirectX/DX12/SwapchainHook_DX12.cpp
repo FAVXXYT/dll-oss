@@ -225,6 +225,15 @@ void SwapchainHook::DX12Init() {
 }
 
 void SwapchainHook::DX12Render(bool underui) {
+    static bool liveLogged = false;
+    if (!liveLogged) {
+        liveLogged = true;
+        Logger::debug("[Swapchain] DX12Render live: D2D={} dev11on12={} isDX12={} queue={}",
+            D2D::context.get() != nullptr ? 1 : 0,
+            d3d11On12Device.get() != nullptr ? 1 : 0,
+            isDX12 ? 1 : 0,
+            queue.get() != nullptr ? 1 : 0);
+    }
     if (!D2D::context || !d3d11On12Device || !isDX12 || !queue) return;
 
     currentBitmap = swapchain->GetCurrentBackBufferIndex();
