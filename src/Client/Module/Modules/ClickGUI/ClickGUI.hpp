@@ -14,7 +14,7 @@
 #include "../../../GUI/Engine/Constraints.hpp"
 #include "../../../GUI/D2D.hpp"
 #include "../../../../Assets/Assets.hpp"
-#include "../../../Utils/Logger/Logger.hpp"
+#include "../../../../Utils/Logger/Logger.hpp"
 
 #define clickgui ModuleManager::getModule("ClickGUI")
 
