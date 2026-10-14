@@ -165,7 +165,7 @@ void SwapchainHook::DX12Init() {
             IID_PPV_ARGS(D3D11Resources[i].put())
         );
 
-        D3D11Resources[i]->QueryInterface(IID_PPV_ARGS(DXGISurfaces[i].get()));
+        D3D11Resources[i]->QueryInterface(IID_PPV_ARGS(DXGISurfaces[i].put()));
 
         D2D::context->CreateBitmapFromDxgiSurface(DXGISurfaces[i].get(), bitmapProps, D2D1Bitmaps[i].put());
 
