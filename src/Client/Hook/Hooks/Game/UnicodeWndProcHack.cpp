@@ -69,6 +69,7 @@ LRESULT UnicodeWndProcHack::MasterWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, L
     // visibly reacts means input bypasses window messages (raw/GameInput).
     {
         static std::map<HWND, std::pair<long long, long long>> traffic; // moves, clicks
+        static std::map<HWND, long long> rawTraffic; // WM_INPUT (raw/hardware)
         static bool reported = false;
         bool countIt = false;
         bool isClick = false;
@@ -80,6 +81,23 @@ LRESULT UnicodeWndProcHack::MasterWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, L
         case WM_XBUTTONDOWN: case WM_XBUTTONUP:
         case WM_MOUSEWHEEL: case WM_MOUSEHWHEEL:
             countIt = true; isClick = true; break;
+        case WM_INPUT:
+            rawTraffic[hWnd]++;
+            if (!reported) {
+                long long total = 0;
+                for (auto &kv : traffic) total += kv.second.first + kv.second.second;
+                for (auto &kv : rawTraffic) total += kv.second;
+                if (total >= 300) {
+                    reported = true;
+                    for (auto &kv : traffic)
+                        Logger::debug("[WndProc] traffic hwnd=0x{:X} moves={} clicks={}",
+                            (unsigned long long)(uintptr_t)kv.first, kv.second.first, kv.second.second);
+                    for (auto &kv : rawTraffic)
+                        Logger::debug("[WndProc] raw hwnd=0x{:X} count={}",
+                            (unsigned long long)(uintptr_t)kv.first, kv.second);
+                }
+            }
+            break;
         default: break;
         }
         if (countIt && !reported) {
@@ -108,6 +126,7 @@ LRESULT UnicodeWndProcHack::MasterWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, L
     if (FlarialGUI::inMenu) {
         switch (uMsg) {
         case WM_MOUSEMOVE:
+        case WM_INPUT:
         case WM_LBUTTONDOWN: case WM_LBUTTONUP:
         case WM_RBUTTONDOWN: case WM_RBUTTONUP:
         case WM_MBUTTONDOWN: case WM_MBUTTONUP:
