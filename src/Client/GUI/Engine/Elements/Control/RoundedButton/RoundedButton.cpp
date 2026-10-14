@@ -109,6 +109,13 @@ bool FlarialGUI::RoundedButton(const int index, float x, float y, const D2D_COLO
 
     if (isAdditionalY) SetIsInAdditionalYMode();
 
+    if (MC::mouseButton == MouseButton::Left) {
+        static int dbgN = 0;
+        if ((++dbgN % 30) == 0)
+            Logger::debug("[Btn] inRect={} held={} mpos={:.0f},{:.0f} rect={:.0f},{:.0f}+{:.0f}x{:.0f}",
+                CursorInRect(x, y, width, height) ? 1 : 0, MC::held ? 1 : 0,
+                (double)MC::mousePos.x, (double)MC::mousePos.y, (double)x, (double)y, (double)width, (double)height);
+    }
     if (CursorInRect(x, y, width, height) && MC::mouseButton == MouseButton::Left && !MC::held) {
         Logger::debug("[Mouse] RoundedButton FIRED idx={}", index);
         // Log button click
