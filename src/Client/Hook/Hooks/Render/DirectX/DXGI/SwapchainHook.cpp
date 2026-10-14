@@ -204,7 +204,9 @@ HRESULT SwapchainHook::swapchainCallback(IDXGISwapChain3 *pSwapChain, UINT syncI
     if (Client::disable || !Client::init) return funcOriginal(pSwapChain, syncInterval, flags);
 
 
-    Logger::debug("{}", (void*)SDK::getBgfxContext()->getRendererContext());
+    if (auto* bgfxCtx = SDK::getBgfxContext()) {
+        Logger::debug("{}", (void*)bgfxCtx->getRendererContext());
+    }
     // Detect the actual API from the swapchain
     GraphicsAPI detectedAPI = DetectSwapchainAPI(pSwapChain);
 

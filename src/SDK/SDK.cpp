@@ -154,8 +154,12 @@ std::string SDK::getCurrentScreen() {
 }
 
 bgfx::Context* SDK::getBgfxContext() {
-    static auto parse = hat::parse_signature(GET_SIG("bgfx::s_ctx"));
+    static const char* sig = GET_SIG("bgfx::s_ctx");
+    if (!sig) return nullptr;
+    static auto parse = hat::parse_signature(sig);
+    if (!parse.has_value()) return nullptr;
     static auto result = hat::find_pattern(parse.value(), ".text");
+    if (!result.has_result()) return nullptr;
     return *reinterpret_cast<bgfx::Context**>(result.rel(3));
 }
 
