@@ -1,6 +1,7 @@
 #include "../DXGI/SwapchainHook.hpp"
 #include <winrt/base.h>
 #include "../../../../../GUI/D2D.hpp"
+#include "../../../../../GUI/Engine/EngineImGui.hpp"
 #include "../../../../../Events/Render/RenderEvent.hpp"
 #include "../../../../../Events/Render/RenderUnderUIEvent.hpp"
 #include "d2d1.h"
@@ -295,9 +296,6 @@ void SwapchainHook::DX12Render(bool underui) {
 
     D2D::context->BeginDraw();
 
-    // FAVIO-TEMP: fullscreen-pipeline proof — opaque red box, no gates.
-    FlarialGUI::RoundedRect(0, 0, D2D1::ColorF(1, 0, 0, 1), 400, 400, 0, 0);
-
     {
         std::lock_guard<std::mutex> lock(SwapchainHook::imguiInputMutex);
         ImGui_ImplDX12_NewFrame();
@@ -329,6 +327,9 @@ void SwapchainHook::DX12Render(bool underui) {
     // Process any pending module toggles before dispatching events
     // This avoids deadlock when modules are toggled from within event callbacks
     ModuleManager::processPendingToggles();
+
+    // FAVIO-TEMP: pipeline proof — inside ImGui frame, no gates.
+    FlarialGUI::RoundedRect(0, 0, D2D1::ColorF(1, 0, 0, 1), 400, 400, 0, 0);
 
     if (!underui) {
         auto event = nes::make_holder<RenderEvent>();
