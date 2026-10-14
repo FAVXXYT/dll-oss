@@ -2,8 +2,11 @@
 #include "UnicodeWndProcHack.hpp"
 
 #include "Hook/Hooks/Input/KeyHook.hpp"
+#include "../../../../Utils/Logger/Logger.hpp"
+#include "../../../GUI/Engine/EngineCore.hpp"
 
 #include <map>
+#include <utility>
 
 WNDPROC UnicodeWndProcHack::g_realWndProc = nullptr;
 
@@ -61,9 +64,59 @@ LRESULT UnicodeWndProcHack::MasterWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, L
     static int msgCount = 0;
     if ((++msgCount % 500) == 0) ensureAllWindowsHooked();
 
+    // Diagnostic: prove which hooked windows real mouse traffic reaches.
+    // (One line per window, once.) Absence of traffic here while the game
+    // visibly reacts means input bypasses window messages (raw/GameInput).
+    {
+        static std::map<HWND, std::pair<long long, long long>> traffic; // moves, clicks
+        static bool reported = false;
+        bool countIt = false;
+        bool isClick = false;
+        switch (uMsg) {
+        case WM_MOUSEMOVE: countIt = true; break;
+        case WM_LBUTTONDOWN: case WM_LBUTTONUP:
+        case WM_RBUTTONDOWN: case WM_RBUTTONUP:
+        case WM_MBUTTONDOWN: case WM_MBUTTONUP:
+        case WM_XBUTTONDOWN: case WM_XBUTTONUP:
+        case WM_MOUSEWHEEL: case WM_MOUSEHWHEEL:
+            countIt = true; isClick = true; break;
+        default: break;
+        }
+        if (countIt && !reported) {
+            auto &slot = traffic[hWnd];
+            if (isClick) slot.second++; else slot.first++;
+            long long total = 0;
+            for (auto &kv : traffic) total += kv.second.first + kv.second.second;
+            if (total >= 300) {
+                reported = true;
+                for (auto &kv : traffic)
+                    Logger::debug("[WndProc] traffic hwnd=0x{:X} moves={} clicks={}",
+                        (unsigned long long)(uintptr_t)kv.first, kv.second.first, kv.second.second);
+            }
+        }
+    }
+
     // Check if key event was cancelled (e.g., when GUI is open)
     if (KeyHook::handle(hWnd, uMsg, wParam, lParam))
         return 0; // Block the key from reaching the game
+
+    // Modal menu: with the menu open the game must not see the mouse at all
+    // (hover highlights, clicks on inventory/settings, look-around deltas that
+    // arrive as messages). The menu already got its copy via handle() above,
+    // so swallowing here only starves the game. Keys intentionally pass through
+    // so typing in menu textboxes keeps working.
+    if (FlarialGUI::inMenu) {
+        switch (uMsg) {
+        case WM_MOUSEMOVE:
+        case WM_LBUTTONDOWN: case WM_LBUTTONUP:
+        case WM_RBUTTONDOWN: case WM_RBUTTONUP:
+        case WM_MBUTTONDOWN: case WM_MBUTTONUP:
+        case WM_XBUTTONDOWN: case WM_XBUTTONUP:
+        case WM_MOUSEWHEEL: case WM_MOUSEHWHEEL:
+            return 0;
+        default: break;
+        }
+    }
 
     // Dispatch to this window's original proc (multi-window coverage).
     auto it = g_wndProcs.find(hWnd);
