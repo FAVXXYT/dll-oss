@@ -325,7 +325,7 @@ void Client::initialize()
         fs::path source =
             getenv("AppData") +
             (std::string)
-            "\\..\\Local\\Packages\\Microsoft.MinecraftUWP_8wekyb3d8bbwe\\RoamingState\\FAVIO";
+            "\\..\\Local\\Packages\\Microsoft.MinecraftUWP_8wekyb3d8bbwe\\RoamingState\\Flarial";
         fs::path destination = directories[0];
         fs::path migrationMarker = destination / ".migrated";
 
@@ -334,7 +334,7 @@ void Client::initialize()
             if (std::filesystem::exists(source) && !std::filesystem::is_empty(source) &&
                 !std::filesystem::exists(migrationMarker))
             {
-                Logger::debug("Migrating FAVIO Data");
+                Logger::debug("Migrating Flarial Data to FAVIO");
                 fs::create_directories(destination);
 
                 for (const auto& entry : fs::directory_iterator(source))
@@ -351,7 +351,7 @@ void Client::initialize()
                 std::ofstream marker(migrationMarker);
                 marker.close();
 
-                Logger::success("Successfully migrated FAVIO Data to new directory");
+                Logger::success("Successfully migrated Flarial Data to FAVIO directory");
             }
         }
         catch (const fs::filesystem_error& e)
