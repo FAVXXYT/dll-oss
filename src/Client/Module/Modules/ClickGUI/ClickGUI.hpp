@@ -381,8 +381,10 @@ public:
                         // Immediately hide cursor + set inactive, defer state cleanup to render thread
                         this->active = false;
                         menuOpen = false;
-                        // FAVIO: relock directly (no clientInstance on 1.26.52).
-                        CursorHandler::grabCursor();
+                        // FAVIO: leave the cursor FREE on close (game recaptures on
+                        // next click, vanilla inventory-like behavior). Forcing a
+                        // capture here trapped the cursor invisible in game UIs.
+                        CursorHandler::releaseCursor();
                         pendingGrabMouse = false;
                         pendingSaveScrollPos = Client::settings.getSettingByName<bool>("saveScrollPos")->value;
                         if (pendingSaveScrollPos) {
