@@ -134,6 +134,7 @@ IDR_YELLOW_LOGO_PNG           PNG "Data\\yellow-logo.png"
 IDR_GAMER_LOGO_PNG            PNG "Data\\gamer-logo.png"
 IDR_BOOSTER_LOGO_PNG          PNG "Data\\booster-logo.png"
 IDR_ORANGE_LOGO_PNG           PNG "Data\\orange-logo.png"
+IDR_FAVIO_LOGO_PNG            PNG "Data\\favio-logo.png"
 IDR_SUPPORTER_LOGO_PNG	      PNG "Data\\supporter-logo.png"
 IDR_MEDIA_LOGO_PNG            PNG "Data\\media-logo.png"
 

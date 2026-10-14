@@ -191,9 +191,10 @@
 #define IDR_INVENTORYLOCK_PNG          292
 #define IDR_MEDIA_LOGO_PNG             293
 #define IDR_ITEMTRACKER_PNG            294
+#define IDR_FAVIO_LOGO_PNG             295
 
 // MAKE SURE YOU ALWAYS UPDATE THIS!
 
-#define MAX_IMAGE_ID                   294
+#define MAX_IMAGE_ID                   295
 
 

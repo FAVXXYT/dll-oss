@@ -559,7 +559,7 @@ void ClickGUI::onRender(RenderEvent &event) {
                     "PNG");
             else
                 FlarialGUI::image(
-                    IDR_WHITE_LOGO_PNG, D2D1::RectF(logoX, logoY, logoX + logoWidthButReal, logoY + logoWidthButReal),
+                    IDR_FAVIO_LOGO_PNG, D2D1::RectF(logoX, logoY, logoX + logoWidthButReal, logoY + logoWidthButReal),
                     "PNG", true, FlarialGUI::D2DColorToImColor(favioLogo));
         }
         FlarialGUI::Tooltip("easter egg", logoX, logoY, "Never gonna give you up", logoWidthButReal, logoWidthButReal);
