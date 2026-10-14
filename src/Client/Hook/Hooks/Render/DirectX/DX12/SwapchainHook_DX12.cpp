@@ -1,7 +1,7 @@
 #include "../DXGI/SwapchainHook.hpp"
 #include <winrt/base.h>
 #include "../../../../../GUI/D2D.hpp"
-#include "../../../../Game/UnicodeWndProcHack.hpp"
+#include "../../../Game/UnicodeWndProcHack.hpp"
 #include <Client/Events/Input/MouseEvent.hpp>
 #include "../../../../../Events/Render/RenderEvent.hpp"
 #include "../../../../../Events/Render/RenderUnderUIEvent.hpp"
