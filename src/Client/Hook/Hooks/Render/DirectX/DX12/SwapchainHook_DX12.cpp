@@ -167,7 +167,22 @@ void SwapchainHook::DX12Init() {
 
         D3D11Resources[i]->QueryInterface(IID_PPV_ARGS(DXGISurfaces[i].put()));
 
-        D2D::context->CreateBitmapFromDxgiSurface(DXGISurfaces[i].get(), bitmapProps, D2D1Bitmaps[i].put());
+        DXGI_SURFACE_DESC surfDesc = {};
+        if (SUCCEEDED(DXGISurfaces[i]->GetDesc(&surfDesc))) {
+            static bool fmtLogged = false;
+            if (!fmtLogged) {
+                fmtLogged = true;
+                Logger::debug("[Swapchain] backbuffer format=0x{:X} {}x{}", static_cast<unsigned>(surfDesc.Format), surfDesc.Width, surfDesc.Height);
+            }
+        }
+        HRESULT bmpHr = D2D::context->CreateBitmapFromDxgiSurface(DXGISurfaces[i].get(), bitmapProps, D2D1Bitmaps[i].put());
+        {
+            static bool bmpLogged = false;
+            if (!bmpLogged) {
+                bmpLogged = true;
+                Logger::debug("[Swapchain] CreateBitmap hr=0x{:X} bitmap={}", static_cast<unsigned>(bmpHr), D2D1Bitmaps[i].get() ? 1 : 0);
+            }
+        }
 
     }
 
