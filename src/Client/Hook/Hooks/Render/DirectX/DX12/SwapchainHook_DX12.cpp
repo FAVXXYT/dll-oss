@@ -1,6 +1,7 @@
 #include "../DXGI/SwapchainHook.hpp"
 #include <winrt/base.h>
 #include "../../../../../GUI/D2D.hpp"
+#include "../../../../Game/UnicodeWndProcHack.hpp"
 #include <Client/Events/Input/MouseEvent.hpp>
 #include "../../../../../Events/Render/RenderEvent.hpp"
 #include "../../../../../Events/Render/RenderUnderUIEvent.hpp"
@@ -270,6 +271,15 @@ void SwapchainHook::DX12Render(bool underui) {
     }
 
     currentBitmap = swapchain->GetCurrentBackBufferIndex();
+    // FAVIO: re-verify window subclassing periodically (the game recreates or
+    // re-subclasses its windows, silently dropping our input hook).
+    {
+        static int framesSinceRescan = 0;
+        if (++framesSinceRescan >= 300) {
+            framesSinceRescan = 0;
+            UnicodeWndProcHack::refresh();
+        }
+    }
     // FAVIO: detect post-init buffer recreation (resize/world join makes our
     // wrapped resources stale -> overlay vanishes). Force DX12Init re-run.
     {

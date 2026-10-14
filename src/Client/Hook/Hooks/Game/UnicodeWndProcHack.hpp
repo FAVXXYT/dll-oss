@@ -10,6 +10,7 @@
 
 class UnicodeWndProcHack : public Hook {
 public:
+    static void refresh();
     static WNDPROC g_realWndProc;
     static LRESULT CALLBACK MasterWndProc(
         HWND, UINT, WPARAM, LPARAM

@@ -15,7 +15,19 @@ WNDPROC UnicodeWndProcHack::g_realWndProc = nullptr;
 static std::map<HWND, WNDPROC> g_wndProcs;
 
 static void hookOneWindow(HWND hWnd) {
-    if (!hWnd || g_wndProcs.count(hWnd)) return;
+    if (!hWnd || g_wndProcs.count(hWnd)) {
+        // Already tracked: verify the game didn't subclass over us.
+        if (hWnd && g_wndProcs.count(hWnd)) {
+            WNDPROC cur = (WNDPROC)GetWindowLongPtrW(hWnd, GWLP_WNDPROC);
+            if (cur != UnicodeWndProcHack::MasterWndProc) {
+                g_wndProcs.erase(hWnd);
+            } else {
+                return;
+            }
+        } else {
+            return;
+        }
+    }
     if (GetParent(hWnd) == HWND_MESSAGE) return; // message-only: no input
     wchar_t cls[64] = {};
     if (GetClassNameW(hWnd, cls, 64) && wcscmp(cls, L"IME") == 0) return;
@@ -46,6 +58,10 @@ static BOOL CALLBACK hookTopLevel(HWND hWnd, LPARAM pid) {
 
 static void ensureAllWindowsHooked() {
     EnumWindows(hookTopLevel, (LPARAM)GetCurrentProcessId());
+}
+
+void UnicodeWndProcHack::refresh() {
+    ensureAllWindowsHooked();
 }
 
 bool UnicodeWndProcHack::handle(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
