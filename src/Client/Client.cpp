@@ -4,6 +4,7 @@
 
 #include <filesystem>
 #include <thread>
+#include <chrono>
 
 #include <Utils/VersionUtils.hpp>
 #include <Utils/WinrtUtils.hpp>
@@ -11,6 +12,8 @@
 #include <Utils/ShellMessageUtil.hpp>
 
 #include "Command/CommandManager.hpp"
+
+#include "Events/Game/TickEvent.hpp"
 
 #include <winrt/Windows.UI.Core.h>
 #include <winrt/Windows.Foundation.h>
@@ -518,6 +521,23 @@ void Client::initialize()
     PerformPostLegacySetup();
     init = true;
     initMgr.setInitialized(true);
+
+    // FAVIO: synthetic 20Hz tick. ActorBaseTick has no 1.26.52 signature, so
+    // drive TickEvent from our own thread. Actor is always null and
+    // clientInstance is null: handlers must (and now do) null-check.
+    std::thread([] {
+        bool logged = false;
+        while (!Client::disable) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(50));
+            if (Client::disable || !Client::init) continue;
+            auto event = nes::make_holder<TickEvent>(nullptr);
+            eventMgr.trigger(event);
+            if (!logged) {
+                logged = true;
+                Logger::debug("[Tick] synthetic tick live");
+            }
+        }
+    }).detach();
 }
 
 // Forward to InitializationManager

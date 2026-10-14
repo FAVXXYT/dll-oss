@@ -137,6 +137,7 @@ void NickModule::onDrawText(DrawTextEvent& event)
 void NickModule::onTick(TickEvent& event)
 {
     if (!this->isEnabled()) return;
+    if (!SDK::clientInstance) return;
     auto player = SDK::clientInstance->getLocalPlayer();
     if (!player) return;
 

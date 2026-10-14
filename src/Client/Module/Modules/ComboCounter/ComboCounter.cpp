@@ -45,6 +45,7 @@ void ComboCounter::onTick(TickEvent &event) {
 
     if (!SDK::clientInstance || !SDK::clientInstance->getLocalPlayer()) return;
 
+    if (!event.getActor()) return;
     int currentHurtTime = reinterpret_cast<LocalPlayer*>(event.getActor())->getHurtTime();
     bool meow = getOps<bool>("negatives");
 

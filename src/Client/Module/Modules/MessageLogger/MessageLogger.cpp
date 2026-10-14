@@ -38,6 +38,7 @@ void MessageLogger::onPacket(PacketEvent &event) {
 
 void MessageLogger::onTick(TickEvent &event) {
     if (!this->isEnabled() || !update) return;
+    if (!SDK::clientInstance) return;
     update = false;
 
     auto& messages = SDK::clientInstance->getGuiData()->getGuiMessages();

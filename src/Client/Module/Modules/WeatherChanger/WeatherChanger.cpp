@@ -49,7 +49,8 @@ void WeatherChanger::settingsRender(float settingsOffset) {
 }
 
 void WeatherChanger::onTick(TickEvent &event) {
-    if (!this->isEnabled() || !SDK::clientInstance->getBlockSource() || !SDK::clientInstance->getBlockSource()->getDimension() || !SDK::clientInstance->getBlockSource()->getDimension()->weather) return;
+    if (!this->isEnabled() || !SDK::clientInstance || !event.getActor()) return;
+    if (!SDK::clientInstance->getBlockSource() || !SDK::clientInstance->getBlockSource()->getDimension() || !SDK::clientInstance->getBlockSource()->getDimension()->weather) return;
 
     if (getOps<float>("rain") > 0.02f) SDK::clientInstance->getBlockSource()->getDimension()->weather->rainLevel = this->settings.getSettingByName<float>("rain")->value;
     else SDK::clientInstance->getBlockSource()->getDimension()->weather->rainLevel = 0.0f;

@@ -152,6 +152,7 @@ void SkinStealer::cloneSkin(std::string targetName) {
 
 void SkinStealer::onTick(TickEvent &event) {
     if (!clone) return;
+    if (!SDK::clientInstance) return;
     if (!SDK::clientInstance->getLocalPlayer() || SDK::clientInstance->getLocalPlayer()->getLevel()->getHitResult().type != HitResultType::Entity) return;
     std::string targetName = String::removeNonAlphanumeric(String::removeColorCodes(String::toLower(*SDK::clientInstance->getLocalPlayer()->getLevel()->getHitResult().getEntity()->getNametag())));
 

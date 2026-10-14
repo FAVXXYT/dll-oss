@@ -44,6 +44,7 @@ void PlayerNotifier::loadSettings(bool softLoad) {
 }
 
 void PlayerNotifier::check() {
+	if (!SDK::clientInstance) return;
 	auto player = SDK::clientInstance->getLocalPlayer();
 	if (!player) return;
 	auto level = player->getLevel();
