@@ -26,6 +26,7 @@ void Keystrokes::onDisable() {
 }
 
 void Keystrokes::defaultConfig() {
+    setDef("enabled", true);
     settings.renameSetting("glowEnabledColor", "glowEnabledOpacity", "glowEnabledRGB", "glowEnabled");
     settings.renameSetting("enabledColor", "enabledOpacity", "enabledRGB", "enabled");
     settings.renameSetting("textEnabledColor", "textEnabledOpacity", "textEnabledRGB", "textEnabled");

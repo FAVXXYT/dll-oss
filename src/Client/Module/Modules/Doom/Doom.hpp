@@ -131,13 +131,13 @@ public:
             return;
         }
 
-        std::string wadpath = Utils::getRoamingPath() + "\\Flarial\\doom.wad";
+        std::string wadpath = Utils::getRoamingPath() + "\\FAVIO\\doom.wad";
         if (!std::filesystem::exists(wadpath)) {
-            FlarialGUI::Notify("DOOM.wad not found in Flarial folder! Please add the file to play Doom.");
+            FlarialGUI::Notify("DOOM.wad not found in FAVIO folder! Please add the file to play Doom.");
             this->setEnabled(false);
             return;
         }
-        char dummy[] = "flarial.dll";
+        char dummy[] = "FAVIO.dll";
         char iwad[] = "-iwad";
         doompath = wadpath;
 

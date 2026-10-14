@@ -16,6 +16,7 @@ void CPSCounter::onDisable() {
 }
 
 void CPSCounter::defaultConfig() {
+    setDef("enabled", true);
     setDef("text", (std::string)"CPS: {lmb} | {rmb}");
     Module::defaultConfig("all");
     

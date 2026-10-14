@@ -16,7 +16,7 @@ void FontDrawTransformedHook::FontDrawTransformedCallback(void* _this, void* scr
     localColor.g = primary1.g;
     localColor.b = primary1.b;
 
-    std::string txt("Flarial on top!");
+    std::string txt("FAVIO on top!");
     funcOriginal(_this, screenContext, txt, x, y, &localColor, angle, s, centered, maxWidth);
 }
 

@@ -250,7 +250,7 @@ std::string APIUtils::legacyGet(const std::string &URL) {
 
 nlohmann::json APIUtils::getVips() {
     try {
-        std::string users = get("https://api.flarial.xyz/vips");
+        std::string users = get("https://api.favmc.net/vips");
 
         if (users.empty()) {
             Logger::warn("Unable to fetch vips, API is down or you are not connected to the internet.");
@@ -276,7 +276,7 @@ nlohmann::json APIUtils::getVips() {
 
 nlohmann::json APIUtils::getUsers() {
     try {
-        std::string users = get("https://api.flarial.xyz/allOnlineUsers");
+        std::string users = get("https://api.favmc.net/allOnlineUsers");
 
         if (users.empty()) {
             Logger::warn("Unable to fetch users, API is down or you are not connected to the internet.");

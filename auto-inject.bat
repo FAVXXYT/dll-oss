@@ -1,6 +1,6 @@
 @echo off
 
-set launcher_path="%USERPROFILE%\Documents\Minecraft\Flarial\Flarial.Launcher.exe"
+set launcher_path="%USERPROFILE%\Documents\Minecraft\FAVIO\FAVIO.Launcher.exe"
 
 if exist %launcher_path% (
     echo "Launched!"

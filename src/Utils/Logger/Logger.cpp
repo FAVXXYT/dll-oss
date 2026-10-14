@@ -42,7 +42,7 @@ namespace Logger {
         if (!console)
         {
             AllocConsole();
-            SetConsoleTitleA("Flarial-Debugger");
+            SetConsoleTitleA("FAVIO-Debugger");
 
             FILE* fp = nullptr;
             freopen_s(&fp, "CONOUT$", "w", stdout);
@@ -68,11 +68,11 @@ namespace Logger {
 #endif
 
         auto message = fmt::format("{}\n{}\n{}\n{}\n{}\n\n",
-            fmt::format("Client Version: {}", FLARIAL_VERSION),
+            fmt::format("Client Version: {}", FAVIO_VERSION),
             fmt::format("Game Version:   {}", WinrtUtils::getFormattedVersion()),
             fmt::format("Commit:         {}", COMMIT_HASH),
-            fmt::format("Build Type:     {}", FLARIAL_BUILD_TYPE),
-            fmt::format("Build Date:     {}", FLARIAL_BUILD_DATE)
+            fmt::format("Build Type:     {}", FAVIO_BUILD_TYPE),
+            fmt::format("Build Date:     {}", FAVIO_BUILD_DATE)
         );
         writeToFile(message);
     }

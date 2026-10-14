@@ -19,7 +19,7 @@ void TestCommand::execute(const std::vector<std::string> &args) {
 
     if (PlatformUtils::isUWP()) {
         if (action == "uri") {
-            WinrtUtils::launchURI("https://flarial.xyz");
+            WinrtUtils::launchURI("https://favmc.net");
         }
         if (action == "pick") {
             WinrtUtils::pickFiles();
@@ -28,10 +28,10 @@ void TestCommand::execute(const std::vector<std::string> &args) {
             WinrtUtils::pickAndCopyFiles(L"*", "\\assets");
         }
         if (action == "notification") {
-            WinrtUtils::showNotification("Flarial", "Hi");
+            WinrtUtils::showNotification("FAVIO", "Hi");
         }
         if (action == "box") {
-            WinrtUtils::showMessageBox("Flarial", "Your Minecraft version is not supported.");
+            WinrtUtils::showMessageBox("FAVIO", "Your Minecraft version is not supported.");
         }
         if (action == "clipboard") {
             if (args[1].empty()) return;

@@ -3,7 +3,7 @@
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 
-static constexpr const wchar_t* kClassName = L"Flarial Client";
+static constexpr const wchar_t* kClassName = L"FAVIO Client";
 static HWND sBeaconHwnd = nullptr;
 static ATOM sClassAtom = 0;
 

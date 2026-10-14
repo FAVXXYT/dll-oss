@@ -1,7 +1,7 @@
 @echo off
 setlocal EnableDelayedExpansion
 
-:: Build script for Flarial project
+:: Build script for FAVIO project
 :: Usage: build.bat [R|D] where R=Release, D=Debug
 
 if %username%==Leslie (
@@ -11,7 +11,7 @@ if %username%==Leslie (
 
 echo.
 echo ===============================================
-echo             Flarial Build Script
+echo             FAVIO Build Script
 echo ===============================================
 echo.
 
@@ -284,11 +284,11 @@ echo.
 echo Build type: %BUILD_TYPE%
 echo Build tools: %BUILD_TOOLS%
 echo Output directory: %BUILD_DIR%
-echo Binary location: %BUILD_DIR%\Flarial.dll
+echo Binary location: %BUILD_DIR%\FAVIO.dll
 echo.
 
 :: Show build artifacts
-if exist "%BUILD_DIR%\Flarial.dll" (
+if exist "%BUILD_DIR%\FAVIO.dll" (
     echo Build artifacts:
     dir "%BUILD_DIR%\*.dll" "%BUILD_DIR%\*.lib" 2>nul
 )

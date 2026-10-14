@@ -2,7 +2,7 @@
 
 /**
  * @file ClientLib.hpp
- * @brief Lua bindings for Flarial client functions
+ * @brief Lua bindings for FAVIO client functions
  *
  * Provides scripts with access to client features like notifications,
  * screen info, and basic controls.
@@ -20,7 +20,7 @@
  *
  * ### Client Info
  * - `client.fps()` - Get current FPS
- * - `client.version()` - Get Flarial client version
+ * - `client.version()` - Get FAVIO client version
  * - `client.mcVersion()` - Get Minecraft version
  * - `client.isInGame()` - Check if player is in a world
  * - `client.isSingleplayer()` - Check if in singleplayer
@@ -96,7 +96,7 @@ public:
                     return static_cast<int>(MC::fps);
                 })
                 .addFunction("version", []() -> std::string {
-                    return std::string(FLARIAL_VERSION);
+                    return std::string(FAVIO_VERSION);
                 })
                 .addFunction("mcVersion", []() -> std::string {
                     return Telemetry::getClientVersion();

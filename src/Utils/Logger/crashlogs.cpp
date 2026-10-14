@@ -184,9 +184,9 @@ namespace glaiel::crashlogs {
             log << get_memory_dump(exception_pointers->ExceptionRecord->ExceptionAddress) << "\n";
         }
 
-        // Enabled Flarial modules
+        // Enabled FAVIO modules
         log << "===============================================\n";
-        log << "           ENABLED FLARIAL MODULES\n";
+        log << "           ENABLED FAVIO MODULES\n";
         log << "===============================================\n\n";
 
         for (const auto& pair : ModuleManager::moduleMap) {
@@ -388,7 +388,7 @@ namespace glaiel::crashlogs {
             output_crash_log();
 
             std::wstringstream ss;
-            ss << L"Flarial crashed and saved a crash report.\n\n";
+            ss << L"FAVIO crashed and saved a crash report.\n\n";
             ss << L"Crash ID: " << utf8_to_wide(current_crash_id.empty() ? "unavailable" : current_crash_id) << L"\n";
             ss << L"Report ID: " << utf8_to_wide(current_report_id.empty() ? "unavailable" : current_report_id) << L"\n";
             ss << L"Commit: " << utf8_to_wide(COMMIT_HASH) << L"\n";

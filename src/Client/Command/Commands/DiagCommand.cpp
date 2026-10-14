@@ -28,10 +28,10 @@ void DiagCommand::execute(const std::vector<std::string>& args) {
     std::vector<std::string> lines;
 
     // Header
-    lines.emplace_back("=== Flarial Diagnostic Dump ===");
+    lines.emplace_back("=== FAVIO Diagnostic Dump ===");
 
     // Version / Platform
-    lines.emplace_back(fmt::format("Flarial commit: {}", COMMIT_HASH));
+    lines.emplace_back(fmt::format("FAVIO commit: {}", COMMIT_HASH));
     lines.emplace_back(fmt::format("MC version: {}", Client::version));
     lines.emplace_back(fmt::format("Platform: {}", PlatformUtils::getPlatformString()));
     lines.emplace_back(fmt::format("GPU: {}", MC::GPU));
@@ -118,7 +118,7 @@ void DiagCommand::execute(const std::vector<std::string>& args) {
 
     // Write abbreviated info to chat (full dump is in log)
     addCommandMessage("§aDiagnostic dump written to log file.");
-    addCommandMessage("§7Flarial §f{} §7| MC §f{} §7| §f{}", COMMIT_HASH, Client::version, PlatformUtils::getPlatformString());
+    addCommandMessage("§7FAVIO §f{} §7| MC §f{} §7| §f{}", COMMIT_HASH, Client::version, PlatformUtils::getPlatformString());
     addCommandMessage("§7DX: kiero=§f{} §7isDX12=§f{} §7init=§f{} §7imgui=§f{}",
         kieroRenderTypeString(kiero::getRenderType()),
         SwapchainHook::isDX12,
@@ -138,6 +138,6 @@ void DiagCommand::execute(const std::vector<std::string>& args) {
             clickgui->active, clickgui->getKeybind(), ClickGUI::baseHeightActual);
 
     addCommandMessage("§7Modules: §f{} §7registered, §f{} §7enabled", ModuleManager::moduleMap.size(), enabledCount);
-    addCommandMessage("§eLog path: §f%localappdata%\\Flarial\\Client\\logs\\latest.log");
+    addCommandMessage("§eLog path: §f%localappdata%\\FAVIO\\Client\\logs\\latest.log");
     addCommandMessage("§cSend your log file when requested to.");
 }

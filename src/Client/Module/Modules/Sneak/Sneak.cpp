@@ -17,6 +17,7 @@ void Sneak::onDisable() {
 }
 
 void Sneak::defaultConfig() {
+    setDef("enabled", true);
     getKeybind();
     Module::defaultConfig("core");
     setDef("status", false);

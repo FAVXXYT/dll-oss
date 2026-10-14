@@ -169,7 +169,8 @@ DWORD WINAPI init() {
                     xuid = tryResolveLocalXuidFromState();
                 }
 
-                if ((elapsed >= std::chrono::seconds(60)) and xuid != "") {
+                if ((elapsed >= std::chrono::seconds(60)) and xuid != "" &&
+                    Client::settings.getSettingByName<bool>("apiusage")->value) {
 
                     std::string name = playerState.getUserName();
                     std::string ipToSend = playerState.getServerIP();
@@ -191,7 +192,7 @@ DWORD WINAPI init() {
 
                     if (clearedName != "skinStandardCust") {
 
-                        std::string heartbeatUrl = std::format("https://api.flarial.xyz/heartbeat/{}/{}", urlEncode(clearedName), urlEncode(ipToSend));
+                        std::string heartbeatUrl = std::format("https://api.favmc.net/heartbeat/{}/{}", urlEncode(clearedName), urlEncode(ipToSend));
                         if (!xuid.empty()) heartbeatUrl += "?xuid=" + urlEncode(xuid);
 
                         APIUtils::legacyGet(heartbeatUrl);
@@ -204,7 +205,7 @@ DWORD WINAPI init() {
                     try {
                         std::string data = APIUtils::VectorToList(APIUtils::onlineUsers);
                         std::pair<long, std::string> post = APIUtils::POST_Simple(
-                                "https://api.flarial.xyz/allOnlineUsers", data);
+                                "https://api.favmc.net/allOnlineUsers", data);
                         APIUtils::onlineUsers = APIUtils::UpdateVector(APIUtils::onlineUsers, post.second, playerState.getUserName());
                         APIUtils::onlineUsersSet =
                                 APIUtils::onlineUsers | std::ranges::to<decltype(APIUtils::onlineUsersSet)>();
@@ -244,7 +245,7 @@ DWORD WINAPI init() {
                     Client::settings.getSettingByName<bool>("promotions")->value) {
                     if (SDK::clientInstance and SDK::clientInstance->getGuiData()) {
                         SDK::clientInstance->getGuiData()->displayClientMessage(
-                                "§khiii §r §n§l§4FLARIAL §r§khiii \n§r§cDonate to Flarial! §ehttps://flarial.xyz/donate\n§9Join our discord! §ehttps://flarial.xyz/discord"
+                                "§khiii §r §n§l§4FAVIO §r§khiii \n§r§9Join our discord! §ehttps://discord.gg/PSp3WXFEse"
                         );
                         lastAnnouncementTime = now;
                     }

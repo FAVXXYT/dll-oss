@@ -8,20 +8,20 @@ void PathCommand::open(std::string folder) {
     bool created = false;
 
     if (PlatformUtils::isUWP()) {
-        std::filesystem::path folder_path(Utils::getRoamingPath() + "\\Flarial\\" + folder);
+        std::filesystem::path folder_path(Utils::getRoamingPath() + "\\FAVIO\\" + folder);
         if (!exists(folder_path)) {
             create_directory(folder_path);
             created = true;
         }
-        WinrtUtils::openSubFolder("Flarial\\" + folder);
+        WinrtUtils::openSubFolder("FAVIO\\" + folder);
     }
     else {
-        std::filesystem::path folder_path(PlatformUtils::getRoamingPath() + "\\Flarial\\Client\\" + folder);
+        std::filesystem::path folder_path(PlatformUtils::getRoamingPath() + "\\FAVIO\\Client\\" + folder);
         if (!exists(folder_path)) {
             create_directory(folder_path);
             created = true;
         }
-        PlatformUtils::openFolder(PlatformUtils::getRoamingPath() + "\\Flarial\\Client\\" + folder);
+        PlatformUtils::openFolder(PlatformUtils::getRoamingPath() + "\\FAVIO\\Client\\" + folder);
     }
 
     if (created) addCommandMessage(std::format("Created and opened the <{}> folder!", folder));

@@ -95,7 +95,7 @@ void SwapchainHook::enableHook() {
     }
 
     if (!window2) {
-        window2 = FindWindowByTitle("Flarial");
+        window2 = FindWindowByTitle("FAVIO");
     }
 
     // Phase 1: Hook Present using kiero's vtable guess.
@@ -135,7 +135,7 @@ void SwapchainHook::enableHook() {
     bool isMedal = containsModule(L"medal-hook64.dll");
     if (isRTSS) {
         Logger::debug("[Swapchain] MSI Afterburner failed to unload!");
-        Utils::MessageDialogW(L"Flarial: client failed to initialize, disable MSI Afterburner or RTSS!", L"Error!");
+        Utils::MessageDialogW(L"FAVIO: client failed to initialize, disable MSI Afterburner or RTSS!", L"Error!");
         ModuleManager::terminate();
         Client::disable = true;
     }
@@ -143,7 +143,7 @@ isMedal = false;
     if (isMedal && (Client::settings.getSettingByName<bool>("vsync")->value || Client::settings.getSettingByName<bool>("killdx")->value))
     {
         Logger::debug("[Swapchain] Medal failed to unload!");
-        Utils::MessageDialogW(L"Flarial: client failed to initialize, close Medal! We current don't support it with V-SYNC DISABLER or BETTER FRAMES.", L"Error!");
+        Utils::MessageDialogW(L"FAVIO: client failed to initialize, close Medal! We current don't support it with V-SYNC DISABLER or BETTER FRAMES.", L"Error!");
         ModuleManager::terminate();
         Client::disable = true;
     }

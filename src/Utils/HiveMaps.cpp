@@ -20,7 +20,7 @@ namespace HiveMaps {
     static std::mutex refreshMutex;
 
     std::string getCacheFilePath() {
-        return Utils::getRoamingPath() + "\\Flarial\\hive_maps_cache.json";
+        return Utils::getRoamingPath() + "\\FAVIO\\hive_maps_cache.json";
     }
 
     std::vector<MapInfo> fetchMapsFromApi(const std::string& gameId) {

@@ -519,7 +519,7 @@ void JavaDebugMenu::onRender(RenderEvent &event) {
 
         bool spoof = this->getOps<bool>("imPoorButIWannaLookRich");
 
-        if (this->versionName.empty()) this->versionName = std::format("Flarial V2 [{}], Minecraft {}", COMMIT_HASH, WinrtUtils::getFormattedVersion());
+        if (this->versionName.empty()) this->versionName = std::format("FAVIO V1 [{}], Minecraft {}", COMMIT_HASH, WinrtUtils::getFormattedVersion());
         left.emplace_back(this->versionName);
 
         if (this->isOnBlock(1)) {

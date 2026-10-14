@@ -299,7 +299,7 @@ void SwapchainHook::DX12Render(bool underui) {
             FlarialGUI::Notify("Click " +
                 clickGUI->settings.getSettingByName<std::string>("keybind")->value +
                 " to open the menu in-game.");
-            FlarialGUI::Notify("Join our discord! https://flarial.xyz/discord");
+            FlarialGUI::Notify("Join our discord! https://discord.gg/PSp3WXFEse");
             notificationsShown = true;
         }
     }

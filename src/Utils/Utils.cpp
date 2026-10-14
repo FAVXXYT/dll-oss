@@ -23,7 +23,7 @@ std::string Utils::getRoamingPath() {
 }
 
 std::string Utils::getClientPath() {
-    std::string ClientDir = "\\Flarial";
+    std::string ClientDir = "\\FAVIO";
     if (PlatformUtils::isGDK()) ClientDir += "\\Client";
     std::filesystem::path path(Utils::getRoamingPath() + ClientDir);
     return path.string();

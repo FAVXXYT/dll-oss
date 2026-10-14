@@ -27,6 +27,11 @@ void FPS::customConfig() {
     setDef("fpsSpoofer", 1.0f);
 }
 
+void FPS::defaultConfig() {
+    setDef("enabled", true);
+    HUDModule::defaultConfig();
+}
+
 void FPS::customSettings() {
     addToggle("Spoof FPS", "", "spoof");
     addConditionalSlider(getOps<bool>("spoof"), "Spoofer", "Adjusts the displayed FPS.", "fpsSpoofer", 10.0f);

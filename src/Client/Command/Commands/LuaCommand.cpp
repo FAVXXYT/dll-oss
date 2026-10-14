@@ -18,7 +18,7 @@
 
 winrt::Windows::Foundation::IAsyncOperation<bool> extractAutoComplete() {
     auto roamingFolder = winrt::Windows::Storage::ApplicationData::Current().RoamingFolder();
-    auto autoCompleteFolder = std::filesystem::path(to_string(roamingFolder.Path())) / "Flarial" / "Scripts" / "AutoComplete";
+    auto autoCompleteFolder = std::filesystem::path(to_string(roamingFolder.Path())) / "FAVIO" / "Scripts" / "AutoComplete";
 
     try {
         winrt::Windows::Web::Http::HttpClient httpClient;
@@ -86,10 +86,10 @@ std::string scriptPath(const std::string& category) {
     const auto roamingFolder = to_string(winrt::Windows::Storage::ApplicationData::Current().RoamingFolder().Path());
 
     if (category == "module") {
-        return (std::filesystem::path(roamingFolder) / "Flarial" / "Scripts" / "Modules").string();
+        return (std::filesystem::path(roamingFolder) / "FAVIO" / "Scripts" / "Modules").string();
     }
     if (category == "command") {
-        return (std::filesystem::path(roamingFolder) / "Flarial" / "Scripts" / "Commands").string();
+        return (std::filesystem::path(roamingFolder) / "FAVIO" / "Scripts" / "Commands").string();
     }
 
     return "";
@@ -145,7 +145,7 @@ void LuaCommand::execute(const std::vector<std::string>& args) {
         addCommandMessage("§bimport §8- §7Automatically imports scripts for you");
         addCommandMessage("§bautocomplete §8- §7Imports the latest AutoComplete docs");
     } else if (action == "path") {
-        WinrtUtils::openSubFolder("Flarial\\Scripts");
+        WinrtUtils::openSubFolder("FAVIO\\Scripts");
     } else if (action == "reload") {
         ScriptManager::reloadScripts();
     } else if (action == "import") {
@@ -165,7 +165,7 @@ void LuaCommand::execute(const std::vector<std::string>& args) {
         }();
     } else if (action == "autocomplete") {
         auto roamingFolder = to_string(winrt::Windows::Storage::ApplicationData::Current().RoamingFolder().Path());
-        auto scriptsFolder = std::filesystem::path(roamingFolder) / "Flarial" / "Scripts";
+        auto scriptsFolder = std::filesystem::path(roamingFolder) / "FAVIO" / "Scripts";
 
         std::error_code ec;
         create_directories(scriptsFolder, ec);

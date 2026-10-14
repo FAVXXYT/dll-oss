@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.24.0)
-project(Flarial)
+project(FAVIO)
 
 set(CMAKE_CXX_STANDARD 23)
 
-set(CLIENT_VERSION "2.00") # Update this for every new release
+set(CLIENT_VERSION "1.00") # Update this for every new release
 
 set(CLIENT_BUILD_TYPE "Release")
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -69,24 +69,24 @@ endif()
 
 # Generate version and build date
 string(TIMESTAMP BUILD_DATE "%Y-%m-%d %H:%M:%S" UTC)
-set(FLARIAL_BUILD_DATE "${BUILD_DATE}")
+set(FAVIO_BUILD_DATE "${BUILD_DATE}")
 
 add_compile_definitions(
-        FLARIAL_VERSION=\"${CLIENT_VERSION}\"
-        FLARIAL_BUILD_TYPE=\"${CLIENT_BUILD_TYPE}\"
-        FLARIAL_BUILD_DATE=\"${FLARIAL_BUILD_DATE}\"
+        FAVIO_VERSION=\"${CLIENT_VERSION}\"
+        FAVIO_BUILD_TYPE=\"${CLIENT_BUILD_TYPE}\"
+        FAVIO_BUILD_DATE=\"${FAVIO_BUILD_DATE}\"
 )
 
 file(GLOB_RECURSE SOURCE_FILES "src/*.cpp" "src/*.hpp")
 file(GLOB_RECURSE LIB_FILES "lib/*.cpp" "lib/*.h")
-add_library(Flarial SHARED main.cpp ${SOURCE_FILES} ${LIB_FILES} src/Assets/Assets.rc
+add_library(FAVIO SHARED main.cpp ${SOURCE_FILES} ${LIB_FILES} src/Assets/Assets.rc
         src/SDK/Client/Network/Packet/AnimatePacket.hpp
         src/Client/Module/Modules/Subtitles/Subtitles.cpp
         src/Client/Module/Modules/Subtitles/Subtitles.hpp
         src/Client/Events/Game/SoundEnginePlayEvent.hpp
         src/SDK/Client/Network/Packet/TakeItemActorPacket.hpp)
 
-target_include_directories(Flarial PRIVATE
+target_include_directories(FAVIO PRIVATE
         "."
         "src"
         "src/Client"
@@ -98,7 +98,7 @@ target_include_directories(Flarial PRIVATE
 add_library(miniz STATIC lib/miniz/miniz.c)
 target_include_directories(miniz PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/lib/miniz")
 
-target_link_libraries(Flarial PRIVATE miniz)
+target_link_libraries(FAVIO PRIVATE miniz)
 
 set_target_properties(miniz PROPERTIES
         MSVC_RUNTIME_LIBRARY "MultiThreaded"
@@ -191,9 +191,9 @@ FetchContent_Declare(
 set(FMT_MODULE OFF CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(libhat entt nes fmt magic_enum LuaBridge safetyhook jsoncpp discord-rpc rift)
 
-target_link_libraries(Flarial PRIVATE jsoncpp safetyhook libcurl ws2_32.lib crypt32.lib normaliz.lib wldap32.lib LuaBridge lua_static libhat fmt::fmt EnTT::EnTT NES windowscodecs.lib urlmon.lib dwrite.lib d3d12.lib dxgi.lib d3d11.lib d2d1.lib wininet.lib setupapi.lib version FreeType magic_enum runtimeobject discord-rpc rift)
+target_link_libraries(FAVIO PRIVATE jsoncpp safetyhook libcurl ws2_32.lib crypt32.lib normaliz.lib wldap32.lib LuaBridge lua_static libhat fmt::fmt EnTT::EnTT NES windowscodecs.lib urlmon.lib dwrite.lib d3d12.lib dxgi.lib d3d11.lib d2d1.lib wininet.lib setupapi.lib version FreeType magic_enum runtimeobject discord-rpc rift)
 
-target_link_libraries(Flarial PUBLIC MinHook)
+target_link_libraries(FAVIO PUBLIC MinHook)
 
 if (EXISTS "${CMAKE_SOURCE_DIR}/compiledoom.txt")
     message(WARNING "Compiling with Doom Module, Flarial may freeze or crash.")
@@ -201,12 +201,12 @@ if (EXISTS "${CMAKE_SOURCE_DIR}/compiledoom.txt")
     file(GLOB_RECURSE DOOM_SOURCES "src/Client/Module/Modules/Doom/doomgeneric/*.c" "src/Client/Module/Modules/Doom/doomgeneric/*.h")
     add_library(DoomModule ${DOOM_SOURCES}
             src/SDK/Client/Network/Packet/TakeItemActorPacket.hpp)
-    target_link_libraries(Flarial PRIVATE DoomModule)
+    target_link_libraries(FAVIO PRIVATE DoomModule)
 endif ()
 
-target_precompile_headers(Flarial PRIVATE "src/PCH.hpp")
+target_precompile_headers(FAVIO PRIVATE "src/PCH.hpp")
 
 if (CMAKE_BUILD_TYPE STREQUAL "Release")
-set_property(TARGET Flarial PROPERTY UNITY_BUILD ON)
-set_property(TARGET Flarial PROPERTY UNITY_BUILD_BATCH_SIZE 16)
+set_property(TARGET FAVIO PROPERTY UNITY_BUILD ON)
+set_property(TARGET FAVIO PROPERTY UNITY_BUILD_BATCH_SIZE 16)
 endif ()

@@ -264,8 +264,8 @@ void Client::initialize()
         Logger::success("Running in Win32 mode with WinRT support");
     }
 
-    std::string windowTitle = fmt::format("Flarial v{} {} [{}]", FLARIAL_VERSION,
-                                          FLARIAL_BUILD_DATE, COMMIT_HASH);
+    std::string windowTitle = fmt::format("FAVIO v{} {} [{}]", FAVIO_VERSION,
+                                          FAVIO_BUILD_DATE, COMMIT_HASH);
 
     if (PlatformUtils::isUWP())
         WinrtUtils::setWindowTitle(windowTitle);
@@ -281,13 +281,13 @@ void Client::initialize()
     {
         LOG_FATAL("{} Unsupported Minecraft version", version);
         ShellMessageUtil::showA(nullptr,
-            "This Minecraft version is not supported by Flarial Client.\n\n"
+            "This Minecraft version is not supported by FAVIO Client.\n\n"
             "To fix this, try the following:\n"
             "1. Make sure your launcher is using the release version of the client (not a custom DLL).\n"
             "2. Restart the launcher and try again.\n"
             "3. If you've done both of the above, then the client may have not updated :(\n"
-            "   Join our Discord for help and updates: https://flarial.xyz/discord",
-            "Flarial - Unsupported Version", MB_OK | MB_ICONWARNING);
+            "   Join our Discord for help and updates: https://discord.gg/PSp3WXFEse",
+            "FAVIO - Unsupported Version", MB_OK | MB_ICONWARNING);
         ModuleManager::terminate();
         disable = true;
         initMgr.setDisabled(true);
@@ -298,25 +298,25 @@ void Client::initialize()
     VersionUtils::addData();
 
     std::vector<std::filesystem::path> directories = {
-        Utils::getRoamingPath() + "\\Flarial",
-        Utils::getRoamingPath() + "\\Flarial\\assets",
-        Utils::getRoamingPath() + "\\Flarial\\logs",
-        Utils::getRoamingPath() + "\\Flarial\\Config",
-        Utils::getRoamingPath() + "\\Flarial\\Scripts",
-        Utils::getRoamingPath() + "\\Flarial\\Crosshairs",
-        Utils::getRoamingPath() + "\\Flarial\\MessageLogger"
+        Utils::getRoamingPath() + "\\FAVIO",
+        Utils::getRoamingPath() + "\\FAVIO\\assets",
+        Utils::getRoamingPath() + "\\FAVIO\\logs",
+        Utils::getRoamingPath() + "\\FAVIO\\Config",
+        Utils::getRoamingPath() + "\\FAVIO\\Scripts",
+        Utils::getRoamingPath() + "\\FAVIO\\Crosshairs",
+        Utils::getRoamingPath() + "\\FAVIO\\MessageLogger"
     };
 
     if (PlatformUtils::isGDK())
     {
         directories = {
-            Utils::getRoamingPath() + "\\Flarial\\Client",
-            Utils::getRoamingPath() + "\\Flarial\\Client\\assets",
-            Utils::getRoamingPath() + "\\Flarial\\Client\\logs",
-            Utils::getRoamingPath() + "\\Flarial\\Client\\Config",
-            Utils::getRoamingPath() + "\\Flarial\\Client\\Scripts",
-            Utils::getRoamingPath() + "\\Flarial\\Client\\Crosshairs",
-            Utils::getRoamingPath() + "\\Flarial\\Client\\MessageLogger"
+            Utils::getRoamingPath() + "\\FAVIO\\Client",
+            Utils::getRoamingPath() + "\\FAVIO\\Client\\assets",
+            Utils::getRoamingPath() + "\\FAVIO\\Client\\logs",
+            Utils::getRoamingPath() + "\\FAVIO\\Client\\Config",
+            Utils::getRoamingPath() + "\\FAVIO\\Client\\Scripts",
+            Utils::getRoamingPath() + "\\FAVIO\\Client\\Crosshairs",
+            Utils::getRoamingPath() + "\\FAVIO\\Client\\MessageLogger"
         };
     }
 
@@ -325,7 +325,7 @@ void Client::initialize()
         fs::path source =
             getenv("AppData") +
             (std::string)
-            "\\..\\Local\\Packages\\Microsoft.MinecraftUWP_8wekyb3d8bbwe\\RoamingState\\Flarial";
+            "\\..\\Local\\Packages\\Microsoft.MinecraftUWP_8wekyb3d8bbwe\\RoamingState\\FAVIO";
         fs::path destination = directories[0];
         fs::path migrationMarker = destination / ".migrated";
 
@@ -334,7 +334,7 @@ void Client::initialize()
             if (std::filesystem::exists(source) && !std::filesystem::is_empty(source) &&
                 !std::filesystem::exists(migrationMarker))
             {
-                Logger::debug("Migrating Flarial Data");
+                Logger::debug("Migrating FAVIO Data");
                 fs::create_directories(destination);
 
                 for (const auto& entry : fs::directory_iterator(source))
@@ -351,7 +351,7 @@ void Client::initialize()
                 std::ofstream marker(migrationMarker);
                 marker.close();
 
-                Logger::success("Successfully migrated Flarial Data to new directory");
+                Logger::success("Successfully migrated FAVIO Data to new directory");
             }
         }
         catch (const fs::filesystem_error& e)
@@ -432,12 +432,12 @@ void Client::initialize()
     ADD_SETTING("disable_alias", false);
     ADD_SETTING("vsync", false);
     ADD_SETTING("recreateAtStart", false);
-    ADD_SETTING("promotions", true);
+    ADD_SETTING("promotions", false);
     ADD_SETTING("hideHudAndMods", true);
     ADD_SETTING("saveScrollPos", true);
     ADD_SETTING("pageScrollMultiplier", 5.0f);
     ADD_SETTING("snappinglines", true);
-    ADD_SETTING("apiusage", true);
+    ADD_SETTING("apiusage", false);
     ADD_SETTING("donotwait", true);
     ADD_SETTING("bufferingmode", std::string("Double Buffering"));
     ADD_SETTING("swapeffect", std::string("FLIP_SEQUENTIAL"));
@@ -576,7 +576,7 @@ nlohmann::json Client::globalSettings;
 std::string Client::version;
 HMODULE Client::currentModule = nullptr;
 std::string Client::path = Utils::getConfigsPath() + "\\default.json";
-std::string Client::legacyPath = Utils::getConfigsPath() + "\\main.flarial";
+std::string Client::legacyPath = Utils::getConfigsPath() + "\\main.favio";
 std::string Client::legacyDir = Utils::getConfigsPath() + "\\Legacy";
 
 Client::LocalPlayerState& Client::getPlayerState() {

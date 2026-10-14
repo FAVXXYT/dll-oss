@@ -293,7 +293,7 @@ void ConfigCommand::execute(const std::vector<std::string>& args) {
         if (action == "reload") ScriptMarketplace::reloadAllConfigs();
         else if (action == "create" && args.size() == 2) { Client::createConfig(args[1]); FlarialGUI::Notify("Created " + args[1]); }
         else if (action == "delete" && args.size() == 2) { Client::deleteConfig(args[1]); FlarialGUI::Notify("Deleted " + args[1]); }
-        else if (action == "select" && args.size() == 2) { if (std::filesystem::exists(Utils::getRoamingPath() + "\\Flarial\\Config\\" + args[1])) {Client::settings.getSettingByName<std::string>("currentConfig")->value = args[1]; FlarialGUI::Notify("Selected " + args[1]);} }
+        else if (action == "select" && args.size() == 2) { if (std::filesystem::exists(Utils::getRoamingPath() + "\\FAVIO\\Config\\" + args[1])) {Client::settings.getSettingByName<std::string>("currentConfig")->value = args[1]; FlarialGUI::Notify("Selected " + args[1]);} }
         else if (action == "import") {
             [=]() -> winrt::fire_and_forget {
                 co_await import();

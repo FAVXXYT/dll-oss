@@ -531,7 +531,7 @@ void CrashTelemetry::sendTelemetryAsync(const nlohmann::json& payload) {
             writeDebug("JSON size: " + std::to_string(jsonData.size()) + " bytes");
 
             writeDebug("Sending POST request...");
-            auto result = APIUtils::POST_Simple("https://api.flarial.xyz/api/v1/crash-logs", jsonData);
+            auto result = APIUtils::POST_Simple("https://api.favmc.net/api/v1/crash-logs", jsonData);
 
             if (result.first >= 200 && result.first < 300) {
                 writeDebug("SUCCESS: HTTP " + std::to_string(result.first));

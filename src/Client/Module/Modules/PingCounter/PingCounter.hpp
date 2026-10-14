@@ -13,6 +13,8 @@ public:
 protected:
 	std::string getDisplayValue() override;
 
+	void defaultConfig() override;
+
 	void customConfig() override;
 
 	void customSettings() override;

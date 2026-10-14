@@ -16,6 +16,11 @@ void PingCounter::customConfig() {
     setDef("pingSpoofer", 1.0f);
 }
 
+void PingCounter::defaultConfig() {
+    setDef("enabled", true);
+    HUDModule::defaultConfig();
+}
+
 void PingCounter::customSettings() {
     addToggle("Use Last Ping", "Uses the last ping sample instead of the average.", "useLastPing");
     addToggle("Spoof Ping", "", "spoof");

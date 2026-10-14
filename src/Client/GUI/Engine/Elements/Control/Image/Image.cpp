@@ -36,7 +36,7 @@ void FlarialGUI::image(const std::string& imageName, D2D1_RECT_F rect) {
     D2D1_RECT_F imageRect = D2D1::RectF(rect.left, rect.top, rect.right, rect.bottom);
     D2D1_BITMAP_INTERPOLATION_MODE interpolationMode = D2D1_BITMAP_INTERPOLATION_MODE_LINEAR;
 
-    if (imageName == R"(\Flarial\Assets\transparent.png)")
+    if (imageName == R"(\FAVIO\Assets\transparent.png)")
         interpolationMode = D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR;
 }
 

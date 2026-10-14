@@ -29,7 +29,7 @@ public:
         }
 
         addCommandMessage("Triggering crash: " + crashName);
-        addCommandMessage("Check %APPDATA%\\Flarial\\logs\\ for crash log");
+        addCommandMessage("Check %APPDATA%\\FAVIO\\logs\\ for crash log");
 
         // Small delay so messages can be displayed
         std::this_thread::sleep_for(std::chrono::milliseconds(100));

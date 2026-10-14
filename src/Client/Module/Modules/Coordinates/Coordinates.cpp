@@ -16,6 +16,7 @@ void Coordinates::onDisable() {
 }
 
 void Coordinates::defaultConfig() {
+    setDef("enabled", true);
     settings.changeType<float, int>("decimalCount");
     getKeybind(1);
 

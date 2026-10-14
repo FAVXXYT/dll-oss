@@ -27,7 +27,7 @@ public:
 	float yaw, pitch = 0;
 	std::string Context, PlayerName = "";
 
-	MumbleLink(): Module("Mumble Link", "Use proximity chat in Flarial with the help of Mumble",
+	MumbleLink(): Module("Mumble Link", "Use proximity chat in FAVIO with the help of Mumble",
 		IDR_MUMBLE_PNG, "") {
 
 	}

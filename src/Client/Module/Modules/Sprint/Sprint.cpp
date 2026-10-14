@@ -8,6 +8,11 @@ void Sprint::customConfig() {
     setDef("keybind", (std::string)"");
 }
 
+void Sprint::defaultConfig() {
+    setDef("enabled", true);
+    HUDModule::defaultConfig();
+}
+
 void Sprint::customSettings() {
     addKeybind("Keybind", "", "keybind", true);
     addToggle("Always Sprint", "Also known as auto sprint", "always");

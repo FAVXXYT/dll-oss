@@ -120,19 +120,19 @@ std::vector<unsigned char> SkinStealCommand::cropHead(const Image &originalImage
 
 void SkinStealCommand::SaveSkin(std::string name, Image image, Image capeImage) {
     const auto imageBytes = image.mImageBytes.data();
-    std::filesystem::path folder_path(Utils::getRoamingPath() + "\\Flarial\\Skins");
+    std::filesystem::path folder_path(Utils::getRoamingPath() + "\\FAVIO\\Skins");
     if (!exists(folder_path)) {
         create_directory(folder_path);
     }
 
-    std::string path = Utils::getRoamingPath() + "\\Flarial\\Skins\\" + name + ".png";
+    std::string path = Utils::getRoamingPath() + "\\FAVIO\\Skins\\" + name + ".png";
 
 
     saveImage(path.c_str(), imageBytes, image.mWidth, image.mHeight);
 
     if (capeImage.mWidth >= 64 && capeImage.mHeight >= 32) {
         const auto capeImageBytes = capeImage.mImageBytes.data();
-        std::string path_to_cape = Utils::getRoamingPath() + "\\Flarial\\Skins\\" + name + "_cape.png";
+        std::string path_to_cape = Utils::getRoamingPath() + "\\FAVIO\\Skins\\" + name + "_cape.png";
         saveImage(path_to_cape.c_str(), capeImageBytes, capeImage.mWidth, capeImage.mHeight);
     }
 
@@ -208,14 +208,14 @@ void SkinStealCommand::execute(const std::vector<std::string> &args) {
     playerName = String::toLower(playerName);
 
     if (playerName == "path") {
-        WinrtUtils::openSubFolder("Flarial\\Skins");
+        WinrtUtils::openSubFolder("FAVIO\\Skins");
         return;
     }
 
     bool found = false;
     for (const auto &pair: SDK::clientInstance->getLocalPlayer()->getLevel()->getPlayerMap()) {
         if (String::toLower(pair.second.name) == playerName) {
-            addCommandMessage("§aSuccessfully {} {}'s skin! Saved at Roamingstate/Flarial/Skins.", shouldClone ? "cloned" : "stole", pair.second.name);
+            addCommandMessage("§aSuccessfully {} {}'s skin! Saved at Roamingstate/FAVIO/Skins.", shouldClone ? "cloned" : "stole", pair.second.name);
             SaveSkin(pair.second.name, pair.second.playerSkin.mSkinImage, pair.second.playerSkin.mCapeImage);
             if (shouldClone) SkinStealer::cloneSkin(pair.second.name);
             found = true;

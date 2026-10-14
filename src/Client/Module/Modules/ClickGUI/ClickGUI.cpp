@@ -28,7 +28,7 @@ ClickGUI::HudFadeGuard::~HudFadeGuard() {
 }
 
 namespace {
-    constexpr size_t FRAME_COUNT = 7;
+    constexpr size_t FRAME_COUNT = 5;
     size_t currentFrame = 0;
     std::chrono::time_point<std::chrono::high_resolution_clock> lastUpdate = std::chrono::high_resolution_clock::now();
 
@@ -50,14 +50,12 @@ namespace {
 
     // Generate animation frame based on primary and secondary color codes
     std::string getAnimationFrame(size_t frame, char primaryColor, char secondaryColor) {
-        std::string frames[7] = {
-            std::string("§") + primaryColor + "FLA§" + secondaryColor + "RIAL",
-            std::string("§") + secondaryColor + "F§" + primaryColor + "LAR§" + secondaryColor + "IAL",
-            std::string("§") + secondaryColor + "FL§" + primaryColor + "ARI§" + secondaryColor + "AL",
-            std::string("§") + secondaryColor + "FLA§" + primaryColor + "RIA§" + secondaryColor + "L",
-            std::string("§") + secondaryColor + "FLAR§" + primaryColor + "IAL",
-            std::string("§") + primaryColor + "F§" + secondaryColor + "LARI§" + primaryColor + "AL",
-            std::string("§") + primaryColor + "FL§" + secondaryColor + "ARIA§" + primaryColor + "L"
+        std::string frames[5] = {
+            std::string("§") + primaryColor + "FA§" + secondaryColor + "VIO",
+            std::string("§") + secondaryColor + "F§" + primaryColor + "AV§" + secondaryColor + "IO",
+            std::string("§") + secondaryColor + "FA§" + primaryColor + "VI§" + secondaryColor + "O",
+            std::string("§") + secondaryColor + "FAV§" + primaryColor + "IO",
+            std::string("§") + primaryColor + "F§" + secondaryColor + "AVI§" + primaryColor + "O"
         };
         return frames[frame];
     }
@@ -126,13 +124,13 @@ ClickGUI::ClickGUI() : Module("ClickGUI", "What do you think it is?",
 void ClickGUI::onDrawText(DrawTextEvent &event) {
     std::string* text = event.getText();
 
-    // Look for "FLARIAL" preceded by a color code
-    size_t pos = text->find("FLARIAL");
+    // Look for "FAVIO" preceded by a color code
+    size_t pos = text->find("FAVIO");
     if (pos != std::string::npos && pos >= 3) {
-        // Check if there's a color code before "FLARIAL" (§ is 2 bytes + 1 byte for color code)
+        // Check if there's a color code before "FAVIO" (§ is 2 bytes + 1 byte for color code)
         // § symbol is at pos-3 and pos-2, color character is at pos-1
         if ((*text)[pos - 3] == '\xC2' && (*text)[pos - 2] == '\xA7') {
-            char colorCode = (*text)[pos - 1]; // Get the color character (the one right before "FLARIAL")
+            char colorCode = (*text)[pos - 1]; // Get the color character (the one right before "FAVIO")
 
             // Look up the color mapping
             auto it = colorMap.find(colorCode);
@@ -151,9 +149,9 @@ void ClickGUI::onDrawText(DrawTextEvent &event) {
                 lastUpdate = now;
             }
 
-            // Find the start of the color-coded FLARIAL (including the § symbol)
+            // Find the start of the color-coded FAVIO (including the § symbol)
             size_t startPos = pos - 3; // Go back to the § character
-            size_t length = 10; // Length of "§XFLARIAL" (2 bytes for §, 1 for color, 7 for FLARIAL)
+            size_t length = 8; // Length of "§XFAVIO" (2 bytes for §, 1 for color, 5 for FAVIO)
 
             // Replace with the animated frame
             text->replace(startPos, length, getAnimationFrame(currentFrame, primaryColor, secondaryColor));
@@ -220,7 +218,7 @@ std::string& ClickGUI::getMutableTextForWatermark(TextPacket& pkt) {
 */
 
 // ============================================================================
-// Chat [FLARIAL] watermark - prefixes Flarial usernames with a colored tag
+// Chat [FAVIO] watermark - prefixes FAVIO usernames with a colored tag
 // ============================================================================
 void ClickGUI::onPacketReceive(PacketEvent& event) {
     try {
@@ -263,11 +261,11 @@ void ClickGUI::onPacketReceive(PacketEvent& event) {
 
         if (!msgField) return;
 
-        // Lambda: build the colored [FLARIAL] prefix for a given username
+        // Lambda: build the colored [FAVIO] prefix for a given username
         auto getPrefix = [](const std::string& name) -> std::optional<std::string> {
             for (const auto& [role, color] : roleColors)
                 if (APIUtils::hasRole(role, name))
-                    return std::format("{}{}{}",  "§r§f[", color, "FLARIAL§f]§r ");
+                    return std::format("{}{}{}",  "§r§f[", color, "FAVIO§f]§r ");
             return std::nullopt;
         };
 
@@ -279,16 +277,16 @@ void ClickGUI::onPacketReceive(PacketEvent& event) {
         }
 
         // ------------------------------------------------------------------
-        // 1) Name field: prefix the sender's name if they are a Flarial user
+        // 1) Name field: prefix the sender's name if they are a FAVIO user
         //    BUT only if their name does NOT also appear in the message body
         //    (the message-body scan below would handle it, causing a dupe).
         // ------------------------------------------------------------------
         if (nameField && !nameField->empty()) {
             const std::string cleanName = String::removeColorCodes(*nameField);
-            bool isFlarialUser = std::ranges::any_of(APIUtils::onlineUsers,
+            bool isFavioUser = std::ranges::any_of(APIUtils::onlineUsers,
                 [&](const std::string& u) { return u == cleanName; });
 
-            if (isFlarialUser) {
+            if (isFavioUser) {
                 const std::string cleanMsg = String::removeColorCodes(*msgField);
                 if (cleanMsg.find(cleanName) == std::string::npos) {
                     auto prefix = getPrefix(cleanName);
@@ -298,7 +296,7 @@ void ClickGUI::onPacketReceive(PacketEvent& event) {
         }
 
         // ------------------------------------------------------------------
-        // 2) Message body: scan for any Flarial usernames and insert tags.
+        // 2) Message body: scan for any FAVIO usernames and insert tags.
         //    Save the original message before modification for dedup check.
         // ------------------------------------------------------------------
         const std::string originalMsg = *msgField;
@@ -324,9 +322,9 @@ void ClickGUI::onPacketReceive(PacketEvent& event) {
                         hitPos = pos - 1;
 
                     // Skip if this specific occurrence is already tagged.
-                    // Our tag sanitizes to "[FLARIAL] " (10 chars) placed exactly at hitPos,
-                    // so on re-entry the 10 chars immediately before hitPos are the tag.
-                    if (hitPos >= 10 && sanitized.substr(hitPos - 10, 10) == "[FLARIAL] ") {
+                    // Our tag sanitizes to "[FAVIO] " (8 chars) placed exactly at hitPos,
+                    // so on re-entry the 8 chars immediately before hitPos are the tag.
+                    if (hitPos >= 8 && sanitized.substr(hitPos - 8, 8) == "[FAVIO] ") {
                         pos = matchPos + user.length();
                         continue;
                     }
@@ -551,7 +549,7 @@ void ClickGUI::onRender(RenderEvent &event) {
         float logoX = navx - Constraints::SpacingConstraint(0.05, logoWidthButReal) + (logoWidthButReal * 0.6);
         float logoY = (navy + navigationBarHeight / 2.0f - logoWidthButReal / 2.0f);
 
-        D2D1_COLOR_F fLARIALlOGO = ClickGUI::getColor("flariallogo");
+        D2D1_COLOR_F favioLogo = ClickGUI::getColor("faviologo");
 
         if (!Client::settings.getSettingByName<bool>("noicons")->value) {
             if (ModuleManager::getModule("Lewis")->getOps<bool>("lewislogo"))
@@ -562,7 +560,7 @@ void ClickGUI::onRender(RenderEvent &event) {
             else
                 FlarialGUI::image(
                     IDR_WHITE_LOGO_PNG, D2D1::RectF(logoX, logoY, logoX + logoWidthButReal, logoY + logoWidthButReal),
-                    "PNG", true, FlarialGUI::D2DColorToImColor(fLARIALlOGO));
+                    "PNG", true, FlarialGUI::D2DColorToImColor(favioLogo));
         }
         FlarialGUI::Tooltip("easter egg", logoX, logoY, "Never gonna give you up", logoWidthButReal, logoWidthButReal);
 
@@ -1203,9 +1201,9 @@ void ClickGUI::onRender(RenderEvent &event) {
                 c->addToggle("Inventory Watermark", "", Client::settings.getSettingByName<bool>("watermark")->value);
                 c->addToggle("Enabled Modules on Top", "",
                              Client::settings.getSettingByName<bool>("enabledModulesOnTop")->value);
-                c->addToggle("No UI Icons / Images", "Flarial only",
+                c->addToggle("No UI Icons / Images", "FAVIO only",
                              Client::settings.getSettingByName<bool>("noicons")->value);
-                c->addToggle("Disable UI Shadows", "Flarial only",
+                c->addToggle("Disable UI Shadows", "FAVIO only",
                              Client::settings.getSettingByName<bool>("noshadows")->value);
 
                 c->extraPadding();
@@ -1230,20 +1228,20 @@ void ClickGUI::onRender(RenderEvent &event) {
                              Client::settings.getSettingByName<bool>("snappinglines")->value);
                 c->addToggle("Center Cursor", "Centers your cursor everytime you open your inventory, etc.",
                              Client::settings.getSettingByName<bool>("centreCursor")->value);
-                c->addToggle("Anonymous on API", "Stay anonymous on Flarial's API.",
+                c->addToggle("Anonymous on API", "Stay anonymous on the API.",
                              Client::settings.getSettingByName<bool>("anonymousApi")->value);
                 c->addToggle("API Usage", "Might disable some features when turned off.",
                              Client::settings.getSettingByName<bool>("apiusage")->value);
-                c->addToggle("Promotions", "To donate & join discord. (pls keep on)",
+                c->addToggle("Promotions", "News and discord updates. (pls keep on)",
                              Client::settings.getSettingByName<bool>("promotions")->value);
-                c->addToggle("No Flarial Logo", "No Logo next to Nametag </3",
+                c->addToggle("No FAVIO Logo", "No Logo next to Nametag </3",
                              Client::settings.getSettingByName<bool>("nologoicon")->value);
-                c->addToggle("No Flarial Chat Icon", "No [FLARIAL] in chat </3",
+                c->addToggle("No FAVIO Chat Icon", "No [FAVIO] in chat </3",
                              Client::settings.getSettingByName<bool>("nochaticon")->value);
                 c->addConditionalToggle(
                         !Client::settings.getSettingByName<bool>("nochaticon")->value,
                         "Single watermark",
-                        "The [FLARIAL] tag will only apply to the first user found in each message.\nThis will be the player sending the messages in a local world.",
+                        "The [FAVIO] tag will only apply to the first user found in each message.\nThis will be the player sending the messages in a local world.",
                         Client::settings.getSettingByName<bool>("singlewatermark")->value
                 );
                 c->addConditionalToggle(

@@ -117,7 +117,7 @@ public:
     }
 
     void defaultConfig() override {
-        settings.renameSetting("colors_FlarialLogo", "o_colors_FlarialLogo", "colors_FlarialLogo_rgb", "flariallogo");
+        settings.renameSetting("colors_FlarialLogo", "o_colors_FlarialLogo", "colors_FlarialLogo_rgb", "faviologo");
         settings.renameSetting("colors_radiobutton_enabled", "o_colors_radiobutton_enabled", "colors_radiobutton_enabled_rgb", "enabledRadioButton");
         settings.renameSetting("colors_radiobutton_disabled", "o_colors_radiobutton_disabled", "colors_radiobutton_disabled_rgb", "disabledRadioButton");
         settings.renameSetting("colors_text", "o_colors_text", "colors_text_rgb", "globalText");
@@ -169,7 +169,7 @@ public:
         setDef("modcard3", (std::string) "3f2a2d", 1.0f, false);
         setDef("modcard4", (std::string) "705d60", 1.0f, false);
         setDef("modicon", (std::string) "1A1313", 1.0f, false);
-        setDef("flariallogo", (std::string) "FE4443", 1.0f, false);
+        setDef("faviologo", (std::string) "FE4443", 1.0f, false);
         setDef("modsettings", (std::string) "FFFFFF", 1.0f, false);
         setDef("enabledRadioButton", (std::string) "D0A0A8", 1.0f, false);
         setDef("disabledRadioButton", (std::string) "FFFFFF", 1.0f, false);
@@ -203,10 +203,10 @@ public:
         this->addHeader("Logo");
         // this->addToggle("Custom logo", "", "custom_logo");
         // if (!getOps<bool>("custom_logo")) {
-        this->addColorPicker("Logo Color", "Color of the client's logo", "flariallogo");
+        this->addColorPicker("Logo Color", "Color of the client's logo", "faviologo");
         // } else {
-        //     this->addButton("", "To customize the logo, change the 'custom-logo.png' file in Flarial's Assets folder.", "Open Subfolder", [this]() {
-        //         WinrtUtils::openSubFolder("Flarial\\assets");
+        //     this->addButton("", "To customize the logo, change the 'custom-logo.png' file in FAVIO's Assets folder.", "Open Subfolder", [this]() {
+        //         WinrtUtils::openSubFolder("FAVIO\\assets");
         //     });
         // }
 

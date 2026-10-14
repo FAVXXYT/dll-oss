@@ -94,11 +94,11 @@ private:
             auto& presence = rpc.getPresence();
             presence.setDetails("Ready to play")
                 .setLargeImageKey("flarialbig")
-                .setLargeImageText("Flarial Client")
+                .setLargeImageText("FAVIO Client")
                 .setStartTimestamp(std::chrono::duration_cast<std::chrono::seconds>(
                     std::chrono::system_clock::now().time_since_epoch()).count())
-                .setButton1("Website", "https://flarial.xyz", true)
-                .setButton2("Discord Server", "https://flarial.xyz/discord", true);
+                .setButton1("Website", "https://favmc.net", true)
+                .setButton2("Discord Server", "https://discord.gg/PSp3WXFEse", true);
             presence.refresh();
 
             // Set initial window title and tracking state
@@ -125,6 +125,8 @@ private:
     }
 
     ServerInfo getServerInfo(const std::string& ip) const {
+        if (ip.find("favmc") != std::string::npos)
+            return {"FAVMC Network", "flarialbig"};
         if (ip.find("hive") != std::string::npos)
             return {"Hive Network", "hivemc"};
         if (ip.find("nethergames") != std::string::npos)
@@ -151,11 +153,11 @@ private:
         auto& presence = discord::RPCManager::get().getPresence();
         presence.setDetails(name)
             .setLargeImageKey(imageKey)
-            .setLargeImageText("Flarial Client")
+            .setLargeImageText("FAVIO Client")
             .setStartTimestamp(std::chrono::duration_cast<std::chrono::seconds>(
                 std::chrono::system_clock::now().time_since_epoch()).count())
-            .setButton1("Website", "https://flarial.xyz", true)
-            .setButton2("Discord Server", "https://flarial.xyz/discord", true);
+            .setButton1("Website", "https://favmc.net", true)
+            .setButton2("Discord Server", "https://discord.gg/PSp3WXFEse", true);
 
         // Show current Hive gamemode as the second line (state field)
         const std::string gamemode = HiveModeCatcherListener::fullgamemodename;
@@ -219,13 +221,13 @@ private:
 
         std::string windowTitle;
         if (serverName == "Ready to play" || serverName == "Not Connected") {
-            windowTitle = fmt::format("Flarial Client {} (#{})", ver, COMMIT_HASH);
+            windowTitle = fmt::format("FAVIO Client {} (#{})", ver, COMMIT_HASH);
         }
         else if (serverName == "Playing Singleplayer" || serverName == "Playing Multiplayer") {
-            windowTitle = fmt::format("Flarial Client {} (#{}) - {}", ver, COMMIT_HASH, serverName);
+            windowTitle = fmt::format("FAVIO Client {} (#{}) - {}", ver, COMMIT_HASH, serverName);
         }
         else {
-            windowTitle = fmt::format("Flarial Client {} (#{}) - Playing on {}", ver, COMMIT_HASH, serverName);
+            windowTitle = fmt::format("FAVIO Client {} (#{}) - Playing on {}", ver, COMMIT_HASH, serverName);
         }
 
         {

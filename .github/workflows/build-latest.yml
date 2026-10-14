@@ -1,4 +1,4 @@
-name: Build Flarial DLL
+name: Build FAVIO DLL
 
 on:
   push:
@@ -100,10 +100,10 @@ jobs:
       - name: Upload DLL and PDB Artifacts
         uses: actions/upload-artifact@v4.6.1
         with:
-          name: Flarial_DLL_${{ needs.check-commit.outputs.build_config }}
+          name: FAVIO_DLL_${{ needs.check-commit.outputs.build_config }}
           path: |
-            build/Flarial.dll
-            build/Flarial.pdb
+            build/FAVIO.dll
+            build/FAVIO.pdb
 
   upload-to-cdn:
     runs-on: ubuntu-latest
@@ -113,7 +113,7 @@ jobs:
       - name: Checkout newcdn repository
         uses: actions/checkout@v4
         with:
-          repository: 'flarialmc/newcdn'
+          repository: 'FAVXXYT/favio-cdn'
           ref: 'main'
           token: ${{ secrets.ACTIONS_GITHUB_TOKEN }}
 
@@ -129,7 +129,7 @@ jobs:
       - name: Download DLL artifact
         uses: actions/download-artifact@v4.1.9
         with:
-          name: Flarial_DLL_Release
+          name: FAVIO_DLL_Release
 
       - name: Setup tags
         id: tag
@@ -150,11 +150,11 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files:
-            Flarial_DLL_Release/Flarial.dll
+            FAVIO_DLL_Release/FAVIO.dll
           tag_name: ${{ env.TAG_NAME }}
           body: ${{ github.event.head_commit.message }}
           name: "Nightly Release"
-          repository: flarialmc/newcdn
+          repository: FAVXXYT/favio-cdn
           token: ${{ secrets.ACTIONS_GITHUB_TOKEN }}
         if: ${{ env.OUTPUT1 == 0 }}
         env:
@@ -167,8 +167,8 @@ jobs:
           git config user.email "actions@example.com"
           COMMIT_HASH="${GITHUB_SHA::7}"
           mkdir -p "./pdb/${COMMIT_HASH}"
-          cp -f Flarial_DLL_Release/Flarial.pdb "./pdb/${COMMIT_HASH}/Flarial.pdb"
-          git add "./pdb/${COMMIT_HASH}/Flarial.pdb"
+          cp -f FAVIO_DLL_Release/FAVIO.pdb "./pdb/${COMMIT_HASH}/FAVIO.pdb"
+          git add "./pdb/${COMMIT_HASH}/FAVIO.pdb"
           git commit -m "Add PDB for nightly ${COMMIT_HASH}"
           git push origin main
           echo "Uploaded PDB for nightly ${COMMIT_HASH}"
@@ -180,8 +180,8 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            Flarial_DLL_Release/Flarial.dll
-            Flarial_DLL_Release/Flarial.pdb
+            FAVIO_DLL_Release/FAVIO.dll
+            FAVIO_DLL_Release/FAVIO.pdb
           tag_name: ${{ env.TAG_NAME }}
           body: ${{ github.event.head_commit.message }}
           name: "Nightly Release"
@@ -196,10 +196,10 @@ jobs:
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@example.com"
           COMMIT_HASH="${GITHUB_SHA::7}"
-          cp -f Flarial_DLL_Release/Flarial.dll "./dll/latest.dll"
+          cp -f FAVIO_DLL_Release/FAVIO.dll "./dll/latest.dll"
           mkdir -p "./pdb/${COMMIT_HASH}"
-          cp -f Flarial_DLL_Release/Flarial.pdb "./pdb/${COMMIT_HASH}/Flarial.pdb"
-          git add ./dll/latest.dll "./pdb/${COMMIT_HASH}/Flarial.pdb"
+          cp -f FAVIO_DLL_Release/FAVIO.pdb "./pdb/${COMMIT_HASH}/FAVIO.pdb"
+          git add ./dll/latest.dll "./pdb/${COMMIT_HASH}/FAVIO.pdb"
           git commit -m "Add Release for Release Commit: '${{ github.event.head_commit.message }}'"
           git push origin main
           echo "uploading as release with PDB"
@@ -212,11 +212,11 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files:
-            Flarial_DLL_Release/Flarial.dll
+            FAVIO_DLL_Release/FAVIO.dll
           tag_name: ${{ env.TAG_NAME }}
           body: ${{ github.event.head_commit.message }}
           name: "Release"
-          repository: flarialmc/newcdn
+          repository: FAVXXYT/favio-cdn
           token: ${{ secrets.ACTIONS_GITHUB_TOKEN }}
         if: ${{ env.OUTPUT1 == 1 }}
         env:
@@ -227,8 +227,8 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            Flarial_DLL_Release/Flarial.dll
-            Flarial_DLL_Release/Flarial.pdb
+            FAVIO_DLL_Release/FAVIO.dll
+            FAVIO_DLL_Release/FAVIO.pdb
           tag_name: ${{ env.TAG_NAME }}
           body: ${{ github.event.head_commit.message }}
           name: "Release"
@@ -243,10 +243,10 @@ jobs:
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@example.com"
           COMMIT_HASH="${GITHUB_SHA::7}"
-          cp -f Flarial_DLL_Release/Flarial.dll "./dll/beta.dll"
+          cp -f FAVIO_DLL_Release/FAVIO.dll "./dll/beta.dll"
           mkdir -p "./pdb/${COMMIT_HASH}"
-          cp -f Flarial_DLL_Release/Flarial.pdb "./pdb/${COMMIT_HASH}/Flarial.pdb"
-          git add ./dll/beta.dll "./pdb/${COMMIT_HASH}/Flarial.pdb"
+          cp -f FAVIO_DLL_Release/FAVIO.pdb "./pdb/${COMMIT_HASH}/FAVIO.pdb"
+          git add ./dll/beta.dll "./pdb/${COMMIT_HASH}/FAVIO.pdb"
           git commit -m "Add Beta for Beta Commit: '${{ github.event.head_commit.message }}'"
           git push origin main
           echo "uploading as beta with PDB"
@@ -259,11 +259,11 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files:
-            Flarial_DLL_Release/Flarial.dll
+            FAVIO_DLL_Release/FAVIO.dll
           tag_name: ${{ env.TAG_NAME }}
           body: ${{ github.event.head_commit.message }}
           name: "Beta Release"
-          repository: flarialmc/newcdn
+          repository: FAVXXYT/favio-cdn
           token: ${{ secrets.ACTIONS_GITHUB_TOKEN }}
         if: ${{ env.OUTPUT1 == 2 }}
         env:
@@ -274,8 +274,8 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            Flarial_DLL_Release/Flarial.dll
-            Flarial_DLL_Release/Flarial.pdb
+            FAVIO_DLL_Release/FAVIO.dll
+            FAVIO_DLL_Release/FAVIO.pdb
           tag_name: ${{ env.TAG_NAME }}
           body: ${{ github.event.head_commit.message }}
           name: "Beta Release"
@@ -289,7 +289,7 @@ jobs:
         run: |
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@example.com"
-          curl https://api.github.com/repos/flarialmc/newcdn/tags > cache.txt
+          curl https://api.github.com/repos/FAVXXYT/favio-cdn/tags > cache.txt
 
           git add cache.txt
           git commit -m "Add Cache for Tags (API)"

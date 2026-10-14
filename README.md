@@ -1,16 +1,26 @@
-# Flarial Client
-Welcome to **Flarial Client**, the ultimate modded client designed specifically for Minecraft Bedrock Edition (MCBE). Flarial Client enhances your gameplay with a suite of tools and features that optimize performance, improve visual quality, and provide a smoother gaming experience.
-## Support us on Ko-Fi! https://ko-fi.com/flarialmc
+# FAVIO Client
 
-## CONTRIBUTION MODEL
-Our current open-source model works as follows. Key portions of Flarial that we deem should be private are not part of this repository.
-Alongside this, the current model contains delayed releases for version updates. For instance, if the current Minecraft version is 1.21.200, Flarial's signatures and offsets on this repository will stay on the previous version of Minecraft. 
+FAVIO is a modded client for Minecraft Bedrock Edition (MCBE), forked from
+[Flarial's open-source base](https://github.com/flarialmc/dll-oss) and rebranded.
+It enhances gameplay with performance tools, HUD modules, and quality-of-life
+features for a smoother gaming experience.
 
-Furthermore, as an open-source contributor, you can make pull requests to Flarial with your feature of choice.
-Two official developers will review your pull request and merge as seen fit. Don't worry, your features will be accepted into the closed source repository and hence the official distribution channels as seen fit.
+## How this fork differs from upstream
 
-**However**, it is highly encouraged to **apply** to be part of the development team, for the moment, open a ticket in our discord. We cannot guarantee you an official position at the moment, as obviously, we are in the process of many changes.
-Everything mentioned here can and will change in the future.
+- **Name/brand**: FAVIO everywhere user-visible (window title, dialogs, chat
+  `[FAVIO]` watermark, config folder `%appdata%/../RoamingState\FAVIO`,
+  binary `FAVIO.dll`, version `1.00`).
+- **Privacy defaults**: `apiusage` and `promotions` default to **off**, and the
+  60s heartbeat only runs when API usage is enabled. API endpoints point at
+  `https://api.favmc.net` (no backend yet — API-backed features such as TabList
+  role priority and online-user watermarks stay dormant until one exists).
+- **v1 default modules**: FPS, CPS, Coordinates, Keystrokes, Ping, Toggle
+  Sprint, Toggle Sneak, AutoGG, Zoom, TabList and Debug Menu are enabled on
+  first run. Everything else stays off until toggled.
+- **Links**: website `https://favmc.net`, Discord
+  `https://discord.gg/PSp3WXFEse`.
+- Internal `FlarialGUI::` engine identifiers and `IDR_*` resource IDs are
+  intentionally unchanged (renaming them adds compile risk with no user benefit).
 
 ## Supported Platforms
 
@@ -19,7 +29,8 @@ Everything mentioned here can and will change in the future.
 
 ## Troubleshooting
 
-If you encounter issues, check out our [FAQ](https://discord.gg/flarial-community-1049946152092586054) or join our community on [Discord](https://discord.gg/flarial-community-1049946152092586054). We’re here to help!
+If you encounter issues, join our community on
+[Discord](https://discord.gg/PSp3WXFEse). We're here to help!
 
 ---
 ## Build Guide
@@ -38,6 +49,15 @@ Method 2 - You can use **build.bat** file as well.
 
 By following these steps, you should be able to clone and build the project using CMake successfully.
 
+**CI note**: `.github/workflows/build-latest.yml` uploads release builds to
+`FAVXXYT/favio-cdn` (create that repo and set the `ACTIONS_GITHUB_TOKEN`
+secret before expecting green CDN uploads). Debug/commit builds only need the
+standard `GITHUB_TOKEN`.
+
 ---
 ## Acknowledgements
-This application incorporates various icons provided by Flaticon ([www.flaticon.com](http://www.flaticon.com/)). We appreciate their valuable resources.
+
+This application incorporates various icons provided by Flaticon ([www.flaticon.com](http://www.flaticon.com)). We appreciate their valuable resources.
+
+Upstream project: [Flarial Client](https://flarial.xyz/) by
+[flarialmc](https://github.com/flarialmc) (AGPL-3.0 — see `LICENSE`).

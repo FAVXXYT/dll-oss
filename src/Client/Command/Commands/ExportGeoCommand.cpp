@@ -47,7 +47,7 @@ void ExportGeoCommand::execute(const std::vector<std::string>& args) {
         }
 
         // Ensure output directory exists
-        std::filesystem::path folder(Utils::getRoamingPath() + "\\Flarial\\Geometry");
+        std::filesystem::path folder(Utils::getRoamingPath() + "\\FAVIO\\Geometry");
         if (!exists(folder)) create_directories(folder);
 
         std::string filename = String::removeNonAlphanumeric(entry.name) + "_geometry.json";

@@ -32,7 +32,7 @@ void Telemetry::sendModuleEvent(const std::string& moduleName, const std::string
             {"action", action}
         };
 
-        sendTelemetryAsync("https://api.flarial.xyz/telemetry/module-events", payload);
+        sendTelemetryAsync("https://api.favmc.net/telemetry/module-events", payload);
     } catch (const std::exception& e) {
         Logger::warn("Telemetry error: {}", e.what());
     }
@@ -49,7 +49,7 @@ void Telemetry::sendStartupVersionPing(const std::string& version) {
             {"version", version}
         };
 
-        sendTelemetryAsync("https://api.flarial.xyz/telemetry/version-startup", payload);
+        sendTelemetryAsync("https://api.favmc.net/telemetry/version-startup", payload);
     } catch (const std::exception& e) {
         Logger::warn("Startup telemetry error: {}", e.what());
     }

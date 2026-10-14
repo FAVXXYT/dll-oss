@@ -271,7 +271,7 @@ namespace Hive
         long statusCode = 0;
 
         curl_easy_setopt(curl, CURLOPT_URL, URL.c_str());
-        curl_easy_setopt(curl, CURLOPT_USERAGENT, "FlarialClient/1.0");
+        curl_easy_setopt(curl, CURLOPT_USERAGENT, "FAVIOClient/1.0");
         curl_easy_setopt(curl, CURLOPT_ACCEPT_ENCODING, "");
         curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
         curl_easy_setopt(curl, CURLOPT_TIMEOUT, 10L);

@@ -805,8 +805,8 @@ void TabList::settingsRender(float settingsOffset)
     addToggle("World Name", "", "worldName");
     addToggle("Server Ping", "", "serverPing");
     addToggle("Alphabetical Order", "", "alphaOrder");
-    addToggle("Flarial First",
-              "Prioritize Flarial users (Dev > Staff > Gamer > Supporter > Booster > Default) at the top",
+    addToggle("FAVIO First",
+              "Prioritize FAVIO users (Dev > Staff > Gamer > Supporter > Booster > Default) at the top",
               "flarialFirst");
     addKeybind("Keybind", "", "keybind", true);
     extraPadding();
@@ -864,7 +864,7 @@ int TabList::getRolePriority(const std::string& name)
     if (clearedName.empty()) return 7; // Lowest priority for invalid names
 
     auto it = std::ranges::find(APIUtils::onlineUsers, clearedName);
-    if (it == APIUtils::onlineUsers.end()) return 7; // Non-Flarial users
+    if (it == APIUtils::onlineUsers.end()) return 7; // Non-FAVIO users
 
     // Check roles in order of priority using ApiUtils
     if (APIUtils::hasRole("Dev", clearedName)) return 0;
@@ -873,7 +873,7 @@ int TabList::getRolePriority(const std::string& name)
     if (APIUtils::hasRole("Media", clearedName)) return 3;
     if (APIUtils::hasRole("Supporter", clearedName)) return 4;
     if (APIUtils::hasRole("Booster", clearedName)) return 5;
-    return 6; // Default Flarial user (in onlineUsers but no specific role)
+    return 6; // Default FAVIO user (in onlineUsers but no specific role)
 }
 
 std::vector<PlayerListEntry> TabList::sortVecmap(

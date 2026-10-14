@@ -53,7 +53,7 @@ public:
                 })
                 /*
                 .addStaticFunction("open", [](const std::optional<std::string>& path) {
-                    std::string dir = "Flarial" + (path ? ("\\" + *path) : "");
+                    std::string dir = "FAVIO" + (path ? ("\\" + *path) : "");
                     WinrtUtils::openSubFolder(std::filesystem::path(dir).lexically_normal().string());
                 })
                 */

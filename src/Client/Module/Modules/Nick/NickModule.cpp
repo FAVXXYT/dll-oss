@@ -38,7 +38,7 @@ void NickModule::onDisable()
 void NickModule::defaultConfig()
 {
     Module::defaultConfig("core");
-    setDef("nick", (std::string)"Flarial User");
+    setDef("nick", (std::string)"FAVIO User");
     setDef("bold", false);
     setDef("obfuscated", false);
     setDef("textColor", (std::string)"White");

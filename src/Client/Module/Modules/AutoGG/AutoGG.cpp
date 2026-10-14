@@ -15,6 +15,7 @@ void AutoGG::onDisable()
 
 void AutoGG::defaultConfig()
 {
+    setDef("enabled", true);
     Module::defaultConfig("core");
     setDef("text", (std::string)"GG");
 }

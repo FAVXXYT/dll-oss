@@ -44,7 +44,7 @@ class IRCChat : public Command {
     std::thread listener_thread;
 
 public:
-    IRCChat() : Command("irc", "Chat With other Flarial sigmas") {
+    IRCChat() : Command("irc", "Chat with other FAVIO users") {
         if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
             LOG_ERROR("WSAStartup failed: {}", WSAGetLastError());
             return;
