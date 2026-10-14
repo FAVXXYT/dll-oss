@@ -75,6 +75,18 @@ std::vector<std::shared_ptr<Hook>> HookManager::hooks;
 
 std::string dxVersion[5] = {"Couldn't initialize", "DX9", "DX10", "DX11", "DX12"};
 
+// SEH lives here (not in initialize()) because C2712 forbids __try in
+// functions with objects that need unwinding. A crashing hook is logged
+// and skipped instead of taking the game down — critical while 1.26.52
+// signatures are still being re-found.
+static void enableHookGuarded(const std::shared_ptr<Hook>& hook) {
+    __try {
+        hook->enableHook();
+    } __except (EXCEPTION_EXECUTE_HANDLER) {
+        Logger::custom(fg(fmt::color::crimson), "Hook", "Crashed while enabling {} - skipped", hook->name);
+    }
+}
+
 void HookManager::initialize()
 {
     uint64_t start = Utils::getCurrentMs();
@@ -222,11 +234,7 @@ void HookManager::initialize()
     // if (VersionUtils::checkEqual(21, 130)) addHook<SplashTextHook>();
     for (const auto& hook : hooks)
     {
-        __try {
-            hook->enableHook();
-        } __except (EXCEPTION_EXECUTE_HANDLER) {
-            Logger::custom(fg(fmt::color::crimson), "Hook", "Crashed while enabling {} - skipped", hook->name);
-        }
+        enableHookGuarded(hook);
     }
 
     float elapsed = (Utils::getCurrentMs() - start) / 1000.0;
