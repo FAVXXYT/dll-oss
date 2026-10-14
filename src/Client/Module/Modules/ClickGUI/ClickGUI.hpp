@@ -141,6 +141,37 @@ public:
         settings.renameSetting("colors_mod4", "o_colors_mod4", "colors_mod4_rgb", "modcard4");
         settings.renameSetting("colors_modicon", "o_colors_modicon", "colors_modicon_rgb", "modicon");
         settings.renameSetting("colors_mod_settings_icon", "o_colors_mod_settings_icon", "colors_mod_settings_icon_rgb", "modsettings");
+        // FAVIO theme migration: re-apply the shipped palette when it changes.
+        // setDef() only fills missing keys, so saved configs would keep stale
+        // colors forever without this version stamp (bump to re-palette).
+        int favioTheme = 0;
+        if (auto* tv = settings.getSettingByName<int>("favioTheme")) favioTheme = tv->value;
+        if (favioTheme < 1) {
+            forceDef("settingsSubtext", "5a4028", 1.f, false);
+            forceDef("modNameText", "a8906a", 1.f, false);
+            forceDef("modCardEnabled", "dd7000", 1.f, false);
+            forceDef("modCardDisabled", "6e3a10", 1.f, false);
+            forceDef("primary1", "ff7b00", 1.f, false);
+            forceDef("primary3", "a88a5a", 1.f, false);
+            forceDef("primary4", "7a5a34", 1.f, false);
+            forceDef("secondary1", "4a2f1a", 1.f, false);
+            forceDef("secondary2", "241612", 1.f, false);
+            forceDef("secondary3", "140f08", 1.f, false);
+            forceDef("secondary4", "1e140e", 1.f, false);
+            forceDef("secondary5", "9c4d00", 1.f, false);
+            forceDef("secondary6", "ff8c1a", 1.f, false);
+            forceDef("secondary7", "b06a28", 1.f, false);
+            forceDef("secondary8", "38220f", 1.f, false);
+            forceDef("modcard1", "241612", 1.f, false);
+            forceDef("modcard2", "332016", 1.f, false);
+            forceDef("modcard3", "45301c", 1.f, false);
+            forceDef("modcard4", "7a5a34", 1.f, false);
+            forceDef("modicon", "1c130c", 1.f, false);
+            forceDef("faviologo", "FFFFFF", 1.f, false);
+            forceDef("enabledRadioButton", "E8B080", 1.f, false);
+            if (auto* tv = settings.getSettingByName<int>("favioTheme")) tv->value = 1;
+            else settings.addSetting("favioTheme", 1);
+        }
         getKeybind();
         Module::defaultConfig("core");
         setDef("editmenubind", (std::string) "L");
