@@ -11,6 +11,7 @@
 #include <chrono>
 #include <algorithm>
 #include <Modules/Misc/Input/GUIMouseListener.hpp>
+#include "../../../Hook/Hooks/Input/CursorHandler.hpp"
 #include "../../../GUI/Engine/Constraints.hpp"
 #include "../../../GUI/D2D.hpp"
 #include "../../../../Assets/Assets.hpp"
@@ -380,7 +381,8 @@ public:
                         // Immediately hide cursor + set inactive, defer state cleanup to render thread
                         this->active = false;
                         menuOpen = false;
-                        if (SDK::clientInstance) SDK::clientInstance->grabMouse(10);
+                        // FAVIO: relock directly (no clientInstance on 1.26.52).
+                        CursorHandler::grabCursor();
                         pendingGrabMouse = false;
                         pendingSaveScrollPos = Client::settings.getSettingByName<bool>("saveScrollPos")->value;
                         if (pendingSaveScrollPos) {
@@ -418,6 +420,8 @@ public:
 
                 page.type = "normal";
                 curr = "modules";
+                // FAVIO: free the captured game cursor directly (no clientInstance).
+                CursorHandler::releaseCursor();
             }
         }
 

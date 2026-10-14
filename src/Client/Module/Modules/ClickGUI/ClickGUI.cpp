@@ -391,6 +391,11 @@ void ClickGUI::onPacketReceive(PacketEvent& event) {
 
 
 void ClickGUI::onRender(RenderEvent &event) {
+    // FAVIO: keep the cursor free while the menu is open (the game recaptures it).
+    if (this->active && !pendingClose.load()) {
+        ClipCursor(nullptr);
+        while (ShowCursor(TRUE) < 0) ;
+    }
     // Handle deferred close from the key handler thread safely on the render thread.
     // All shared state modifications (strings, maps, etc.) happen here on the render
     // thread to avoid data races with concurrent reads during rendering.
