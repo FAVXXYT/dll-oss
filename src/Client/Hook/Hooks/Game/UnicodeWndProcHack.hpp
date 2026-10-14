@@ -9,6 +9,7 @@
 #include "../Hook.hpp"
 
 class UnicodeWndProcHack : public Hook {
+public:
     static WNDPROC g_realWndProc;
     static LRESULT CALLBACK MasterWndProc(
         HWND, UINT, WPARAM, LPARAM
