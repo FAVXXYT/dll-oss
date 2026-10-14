@@ -124,7 +124,7 @@ DWORD WINAPI init() {
     Client::elapsed = (Utils::getCurrentMs() - Client::start) / 1000.0;
 
     Logger::debug("Thread ID: {}", std::hash<std::thread::id>{}(std::this_thread::get_id()));
-    Logger::success("Flarial initialized in {:.2f}s", Client::elapsed);
+    Logger::success("FAVIO initialized in {:.2f}s", Client::elapsed);
 
     OptionsParser parser;
     parser.parseOptionsFile();
